@@ -98,7 +98,7 @@ init_etckeeper () {
     git config --global user.email "drewderivative@gmail.com"
 
     sudo etckeeper init
-    sudo chgrp -R adm /etc/.git
+    sudo find /etc/.git -type d -exec chmod 750 {} \;
   fi
 }
 
