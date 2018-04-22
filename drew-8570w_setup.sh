@@ -197,32 +197,38 @@ install_rvm () {
 
 # virtualbox extras pack XXX write better check for version of vbox and if it is already downloaded
 install_vb_extras () {
-  if ! vboxmanage list extpacks | grep 1; then
-    location="/mnt/hdd/iso_installers/ubuntu-installers/"
-    echo y | sudo VBoxManage extpack install "$location"/Oracle_VM_VirtualBox_Extension_Pack-5.2.8.vbox-extpack
+  if [ -f /usr/bin/VBoxManage ]; then
+    if ! vboxmanage list extpacks | grep 1; then
+      location="/mnt/hdd/iso_installers/ubuntu-installers/"
+      echo y | sudo VBoxManage extpack install "$location"/Oracle_VM_VirtualBox_Extension_Pack-5.2.8.vbox-extpack
+    fi
   fi
 }
 
 # atom plugins
 install_atom_plugins () {
-  apm_pkgs=(atom-beautify autocomplete-python busy-signal django-templates intentions linter linter-ui-default script script-runner teletype)
+  if [ -f /usr/bin/atom ]; then
+    apm_pkgs=(atom-beautify autocomplete-python busy-signal django-templates intentions linter linter-ui-default script script-runner teletype)
 
-  for i in "${apm_pkgs[@]}"; do
-    if [ ! -d $HOME/.atom/packages/$i ]; then
-      apm install $i
-    fi
-  done
+    for i in "${apm_pkgs[@]}"; do
+      if [ ! -d $HOME/.atom/packages/$i ]; then
+        apm install $i
+      fi
+    done
+  fi
 }
 
 # vagrant plugins XXX would be better to compare array of whats installed and what needs to be installed
 install_vagrant_plugins () {
-  vg_plugins=("berkshelf" "vagrant-berkshelf")
+  if [ -f /usr/bin/vagrant ]; then
+    vg_plugins=("berkshelf" "vagrant-berkshelf")
 
-  for i in "${vg_plugins[@]}"; do
-    if ! vagrant plugin list | cut -f 1 -d" " | grep -E ^"$i" >/dev/null; then
-      vagrant plugin install $i
-    fi
-  done
+    for i in "${vg_plugins[@]}"; do
+      if ! vagrant plugin list | cut -f 1 -d" " | grep -E ^"$i" >/dev/null; then
+        vagrant plugin install $i
+      fi
+    done
+  fi
 }
 
 # nvm install
