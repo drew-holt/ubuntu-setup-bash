@@ -104,8 +104,13 @@ init_etckeeper () {
 
 # update repo cache if it's been longer than 2 hours
 apt_update () {
-  if [ "$(find /var/cache/apt/pkgcache.bin -mtime 2)" ]; then
+  if [ -f /var/log/first.boot ]; then
+    if [ "$(find /var/cache/apt/pkgcache.bin -mtime 2)" ]; then
+      wait_apt; sudo apt-get -qy update
+    fi
+  else
     wait_apt; sudo apt-get -qy update
+    sudo touch /var/log/first.boot
   fi
 }
 
