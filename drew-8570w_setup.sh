@@ -211,12 +211,15 @@ install_atom_plugins () {
   done
 }
 
-# vagrant plugins XXX write better check
+# vagrant plugins XXX would be better to compare array of whats installed and what needs to be installed
 install_vagrant_plugins () {
-  if ! vagrant plugin list | grep berkshelf; then
-    vagrant plugin install vagrant-berkshelf
-    vagrant plugin install berkshelf
-  fi
+  vg_plugins=("berkshelf" "vagrant-berkshelf")
+
+  for i in "${vg_plugins[@]}"; do
+    if ! vagrant plugin list | cut -f 1 -d" " | grep -E ^"$i" >/dev/null; then
+      vagrant plugin install $i
+    fi
+  done
 }
 
 # nvm install
@@ -228,6 +231,7 @@ install_nvm () {
 
 
 date
+
 START=$(date +%s)
 
 check_sudo
