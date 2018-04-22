@@ -8,10 +8,10 @@
 # SC2119: Use set_shell_stuff "$@" if function's $1 should mean script's $1.
 # SC2120: set_aliases references arguments, but none are ever passed.
 
-#set -x
+set -x
 set -e
 
-# passwordless sudo for my local box
+# passwordless sudo for local box
 check_sudo () {
   if ! sudo grep drew /etc/sudoers; then
     sudo sh -c 'echo "drew ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
@@ -66,8 +66,9 @@ EOF
   fi
 }
 
-## disable popularity-contest XXX fix this so debconf doesn't prompt
-#sudo dpkg-reconfigure popularity-contest
+## disable popularity-contest XXX how dpkg-reconifgure with debconf selection non-interactively
+# echo debconf popularity-contest/participate select false | sudo debconf-set-selections
+# sudo dpkg-reconfigure popularity-contest
 
 # oracle 8 add java repo
 oracle_repo () {
@@ -101,13 +102,14 @@ init_etckeeper () {
   fi
 }
 
-# update repo cache unless it's occured in the last 2 hours
+# update repo cache if it's been longer than 2 hours
 apt_update () {
   if [ "$(find /var/cache/apt/pkgcache.bin -mtime 2)" ]; then
     wait_apt; sudo apt-get -qy update
   fi
 }
 
+# dist-upgrade if upgrades are available
 apt_upgrade () {
   if [ ! "$(/usr/lib/update-notifier/apt-check 2>&1 | cut -d ';' -f 1)" == "0" ]; then
     wait_apt; sudo apt-get -qy dist-upgrade
@@ -115,7 +117,7 @@ apt_upgrade () {
 }
 
 
-# install local installers already gathered that arent in ubuntu repos
+# install already gathered packages that arent in ubuntu repos
 # XXX find a better way to dl the latest installers for these if they are not already on the network
 # and try to create as many /etc/apt/sources.lists.d for these to add to main install_apt()
 local_installers () {
@@ -130,6 +132,7 @@ local_installers () {
   fi
 }
 
+# add debconf for promptless install and apt-get install software
 install_apt () {
   # for wireshark mscorefonts postfix prompts
   echo wireshark-common wireshark-common/install-setuid boolean true | sudo debconf-set-selections
@@ -234,6 +237,7 @@ date
 
 START=$(date +%s)
 
+# run all the functions
 check_sudo
 gsettings_personalizations
 set_shell_stuff
