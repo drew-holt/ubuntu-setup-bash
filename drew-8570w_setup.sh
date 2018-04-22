@@ -107,7 +107,7 @@ extra_repos () {
   fi
 
   if [ ! -f "$APT_DIR"/atom.list ]; then
-    curl -L https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
+    wget -O - https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
     echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" | sudo tee "$APT_DIR"/atom.list
   fi
 
@@ -126,6 +126,18 @@ while true;
 done
 }
 
+# update repo cache if it's been longer than 2 hours else update for first boot
+apt_update () {
+  if [ -f /var/log/first.boot ]; then
+    if [ "$(find /var/cache/apt/pkgcache.bin -mtime 2)" ]; then
+      wait_apt; sudo apt-get -qy update
+    fi
+  else
+    wait_apt; sudo apt-get -qy update
+    sudo touch /var/log/first.boot
+  fi
+}
+
 # install etckeeper first and initialize it
 init_etckeeper () {
   if [ ! -d /etc/.git ]; then
@@ -141,25 +153,12 @@ init_etckeeper () {
   fi
 }
 
-# update repo cache if it's been longer than 2 hours
-apt_update () {
-  if [ -f /var/log/first.boot ]; then
-    if [ "$(find /var/cache/apt/pkgcache.bin -mtime 2)" ]; then
-      wait_apt; sudo apt-get -qy update
-    fi
-  else
-    wait_apt; sudo apt-get -qy update
-    sudo touch /var/log/first.boot
-  fi
-}
-
 # dist-upgrade if upgrades are available
 apt_upgrade () {
   if [ ! "$(/usr/lib/update-notifier/apt-check 2>&1 | cut -d ';' -f 1)" == "0" ]; then
     wait_apt; sudo apt-get -qy dist-upgrade
   fi
 }
-
 
 # install already gathered packages that arent in ubuntu repos
 # XXX find a better way to dl these
@@ -286,7 +285,6 @@ install_nvm () {
   fi
 }
 
-
 date
 
 START=$(date +%s)
@@ -296,8 +294,8 @@ check_sudo
 gsettings_personalizations
 set_shell_stuff
 extra_repos
-init_etckeeper
 apt_update
+init_etckeeper
 apt_upgrade
 local_installers
 install_apt # XXX
