@@ -1,0 +1,13 @@
+sudo: false
+language: bash
+addons:
+  apt:
+    sources:
+    - debian-sid
+    packages:
+    - shellcheck
+script:
+- shellcheck -x *.sh
+notifications:
+  slack:
+    secure: cV8f+U7NgRSNj+E9tDP5wgPpx4wCyA3t+Tx0hsESAkJUnS6vqn/x8Vc9qYJqAwkJPiuQAEzObSgnnw5SWuGUa0VyndjIhoAt5y8CGaRJvEDTIMsgYTdnPVDO+Y+vij9V36Erd01UHBDcEHs+g78JVyCnKQ1RQjrTAgmgMmLSgcziiFmXALrKP93y/cKNBW1WejUv/T+/o5s8LjYzOYYJBqlrLY2gOzpDOeVvR3WWUTNY1ySsW3V7lxU9PjsiTRRN6REsq5l7hRozt30y+ycHeMLBEvJ9jHQw/PWNjuJFE4szyPcsRko29FKOgSkJEGht4mPnLKGJNootnGlC+cZP5Dc2IZnOKPfXdEI2v4nv8uER/wz9KORwbHUOVEU9Pvn3uOt3XE2JH9YxjLBI1HAjSfgQ+zBOVk0LrU121pw0zhfWAP8xJJKMlETnb88+dtZa8UvC60ok0GRo8thy3X7kZ3eiAjmMCiKDN4BEmiG3iu6egRmDc64YvmDvbvn5iFeaCIAhCLLyFhnMgobTQ/IVU/tGoYL37QbQKIaPnukIAccYR5ueSWEvxtnpVlRQ5V5shg6QfVzlctbt0N37MXcS+fe41RuJvTBl9uI8EJE6U963cwGsnhKFbZS1OI5wKwJ4uFwMjf+0Koh1Fp+0Jdz3DVa2a5F0x3nWHyEMmkk9rg4=
