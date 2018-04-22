@@ -126,14 +126,16 @@ apt_upgrade () {
 # XXX find a better way to dl the latest installers for these if they are not already on the network
 # and try to create as many /etc/apt/sources.lists.d for these to add to main install_apt()
 local_installers () {
-  if [ ! -d /mnt/hdd ]; then
-    sudo mkdir /mnt/hdd
-    sudo mount /dev/vg_hdd/lv_hdd /mnt/hdd
-    cd /mnt/hdd/iso_installers/ubuntu-installers
-    wait_apt; sudo apt-get install -qy ./atom-amd64.deb ./google-chrome-stable_current_amd64.deb \
-      ./insync_1.4.4.37065-artful_amd64.deb ./slack-desktop-3.1.0-amd64.deb \
-      ./vagrant_2.0.3_x86_64.deb ./virtualbox-5.2_5.2.8-121009_Ubuntu_zesty_amd64.deb \
-      ./skypeforlinux-64.deb ./keybase_amd64.deb ./chefdk_2.4.17-1_amd64.deb
+  if ! dmesg | grep -i hypervisor; then
+    if [ ! -d /mnt/hdd ]; then
+      sudo mkdir /mnt/hdd
+      sudo mount /dev/vg_hdd/lv_hdd /mnt/hdd
+      cd /mnt/hdd/iso_installers/ubuntu-installers
+      wait_apt; sudo apt-get install -qy ./atom-amd64.deb ./google-chrome-stable_current_amd64.deb \
+        ./insync_1.4.4.37065-artful_amd64.deb ./slack-desktop-3.1.0-amd64.deb \
+        ./vagrant_2.0.3_x86_64.deb ./virtualbox-5.2_5.2.8-121009_Ubuntu_zesty_amd64.deb \
+        ./skypeforlinux-64.deb ./keybase_amd64.deb ./chefdk_2.4.17-1_amd64.deb
+    fi
   fi
 }
 
