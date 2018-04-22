@@ -166,16 +166,15 @@ set_editor () {
   fi
 }
 
-# install pip bits youtube-dl aws-cli XXX write better check for this
+# install pip packages
 pip_bits () {
-  if [ ! -f "$HOME"/.local/bin/youtube-dl ]; then
-    pip install youtube-dl
-  fi
+  pip_pkgs=("youtube-dl" "awscli")
 
-  # install awscli
-  if [ ! -f "$HOME"/.local/bin/aws ]; then
-    pip install awscli
-  fi
+  for i in "${pip_pkgs[@]}"; do
+    if ! pip show "$i" >/dev/null; then
+      pip install $i
+    fi
+  done
 }
 
 # configure lm_sensors
