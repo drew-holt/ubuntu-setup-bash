@@ -70,12 +70,43 @@ EOF
 # echo debconf popularity-contest/participate select false | sudo debconf-set-selections
 # sudo dpkg-reconfigure popularity-contest
 
-# oracle 8 add java repo
-oracle_repo () {
-  if [ ! -f /etc/apt/sources.list.d/webupd8team-ubuntu-java-artful.list ]; then
+# oracle 8, google chrome, keybase, skype, slack, atom, insync
+extra_repos () {
+  APT_DIR="/etc/apt/sources.list.d"
+  if [ ! -f "$APT_DIR"/webupd8team-ubuntu-java-artful.list ]; then
     sudo add-apt-repository -y ppa:webupd8team/java
     echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
     echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+  fi
+
+  if [ ! -f "$APT_DIR"/google-chrome.list ]; then
+    wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee "$APT_DIR"/google-chrome.list
+  fi
+
+  if [ ! -f "$APT_DIR"/keybase.list ]; then
+    wget -q -O - https://keybase.io/docs/server_security/code_signing_key.asc | sudo apt-key add -
+    echo "deb http://prerelease.keybase.io/deb stable main" | sudo tee "$APT_DIR"/keybase.list
+  fi
+
+  if [ ! -f "$APT_DIR"/skype-stable.list ]; then
+    wget -O - https://repo.skype.com/data/SKYPE-GPG-KEY | sudo apt-key add -
+    echo "deb [arch=amd64] https://repo.skype.com/deb stable main" | sudo tee "$APT_DIR"/skype-stable.list
+  fi
+
+  if [ ! -f "$APT_DIR"/slack.list ]; then
+    wget -O - https://packagecloud.io/slacktechnologies/slack/gpgkey | sudo apt-key add -
+    echo "deb https://packagecloud.io/slacktechnologies/slack/debian/ jessie main" | sudo tee "$APT_DIR"/slack.list
+  fi
+
+  if [ ! -f "$APT_DIR"/atom.list ]; then
+    curl -L https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
+    echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" | sudo tee "$APT_DIR"/atom.list
+  fi
+
+  if [ ! -f "$APT_DIR"/insync.list ]; then
+    wget -O - https://d2t3ff60b2tol4.cloudfront.net/services@insynchq.com.gpg.key | sudo apt-key add -
+    echo "deb http://apt.insynchq.com/ubuntu $(lsb_release -cs) non-free" | sudo tee "$APT_DIR"/insync.list
   fi
 }
 
@@ -99,6 +130,7 @@ init_etckeeper () {
 
     sudo etckeeper init
     sudo find /etc/.git -type d -exec chmod 750 {} \;
+    sudo find /etc/.git -type d -exec chgrp adm {} \;
   fi
 }
 
@@ -123,18 +155,17 @@ apt_upgrade () {
 
 
 # install already gathered packages that arent in ubuntu repos
-# XXX find a better way to dl the latest installers for these if they are not already on the network
-# and try to create as many /etc/apt/sources.lists.d for these to add to main install_apt()
+# XXX find a better way to dl these
 local_installers () {
   if ! dmesg | grep -i hypervisor; then
     if [ ! -d /mnt/hdd ]; then
       sudo mkdir /mnt/hdd
       sudo mount /dev/vg_hdd/lv_hdd /mnt/hdd
       cd /mnt/hdd/iso_installers/ubuntu-installers
-      wait_apt; sudo apt-get install -qy ./atom-amd64.deb ./google-chrome-stable_current_amd64.deb \
-        ./insync_1.4.4.37065-artful_amd64.deb ./slack-desktop-3.1.0-amd64.deb \
-        ./vagrant_2.0.3_x86_64.deb ./virtualbox-5.2_5.2.8-121009_Ubuntu_zesty_amd64.deb \
-        ./skypeforlinux-64.deb ./keybase_amd64.deb ./chefdk_2.4.17-1_amd64.deb
+      wait_apt; sudo apt-get install -qy \
+        ./vagrant_2.0.3_x86_64.deb \
+        ./virtualbox-5.2_5.2.8-121009_Ubuntu_zesty_amd64.deb \
+        ./chefdk_2.4.17-1_amd64.deb
     fi
   fi
 }
@@ -165,8 +196,9 @@ install_apt () {
   shellcheck sqlitebrowser yamllint highlight gawk `#dev-tools` \
   lynis pandoc apt-transport-https `#misc` \
   xchat pidgin `#chatapps` \
-  oracle-java8-installer `#oracle java8 from ppa` \
-  ansible `#automation`
+  ansible `#automation` \
+  oracle-java8-installer google-chrome-stable keybase `#extra repos` \
+  skypeforlinux slack-desktop atom insync `#extra repos`
 }
 
 # Set vim editor
@@ -256,7 +288,7 @@ START=$(date +%s)
 check_sudo
 gsettings_personalizations
 set_shell_stuff
-oracle_repo
+extra_repos
 init_etckeeper
 apt_update
 apt_upgrade
