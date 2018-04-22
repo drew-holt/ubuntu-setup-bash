@@ -34,6 +34,13 @@ gsettings_personalizations () {
     gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Alt>Tab']"
     gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward  "['<Alt><Shift>Tab']"
 
+    # set favorite apps in launcher
+    gsettings set org.gnome.shell favorite-apps "['google-chrome.desktop', 'org.gnome.Nautilus.desktop', \
+    'org.gnome.Terminal.desktop', 'libreoffice-startcenter.desktop', 'sqlitebrowser.desktop', \
+    'qBittorrent.desktop', 'audacity.desktop', 'atom.desktop', 'skypeforlinux.desktop', \
+    'org.gnome.baobab.desktop', 'keepass2.desktop', 'slack.desktop', 'vlc.desktop', \
+    'xchat.desktop', 'wireshark.desktop', 'virtualbox.desktop']"
+
     # set gnome-terminal colors
     # e.x.: gsettings list-recursively "org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/"
     # e.x.: gsettings set "org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/" login-shell true
