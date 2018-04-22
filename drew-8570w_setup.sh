@@ -101,13 +101,19 @@ init_etckeeper () {
   fi
 }
 
-# update all repos, upgrade, unless it's occured lately
-# XXX fix this such that if should it not have run in the past hour, skip over this
-apt_upgrade () {
-  #if ! find -H /var/lib/apt/lists -maxdepth 0 -mmin -60; then
-    wait_apt; sudo apt-get -qy update && sudo apt-get -qy dist-upgrade
-  #fi
+# update repo cache unless it's occured in the last 2 hours
+apt_update () {
+  if [ "$(find /var/cache/apt/pkgcache.bin -mtime 2)" ]; then
+    wait_apt; sudo apt-get -qy update
+  fi
 }
+
+apt_upgrade () {
+  if [ ! "$(/usr/lib/update-notifier/apt-check 2>&1 | cut -d ';' -f 1)" == "0" ]; then
+    wait_apt; sudo apt-get -qy dist-upgrade
+  fi
+}
+
 
 # install local installers already gathered that arent in ubuntu repos
 # XXX find a better way to dl the latest installers for these if they are not already on the network
@@ -230,7 +236,8 @@ gsettings_personalizations
 set_shell_stuff
 oracle_repo
 init_etckeeper
-apt_upgrade # XXX
+apt_update
+apt_upgrade
 local_installers
 install_apt # XXX
 set_editor
