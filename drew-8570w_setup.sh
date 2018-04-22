@@ -189,8 +189,10 @@ pip_bits () {
 
 # configure lm_sensors
 config_sensors () {
-  if ! lsmod | grep coretemp; then
-    sudo sensors-detect --auto
+  if ! dmesg | grep -i hypervisor; then
+    if ! lsmod | grep coretemp; then
+      sudo sensors-detect --auto
+    fi
   fi
 }
 
