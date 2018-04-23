@@ -180,7 +180,7 @@ install_apt () {
   openvpn network-manager-openconnect-gnome network-manager-openvpn-gnome `#network-client` \
   rdesktop freerdp2-x11 xtightvncviewer sshpass qbittorrent wireshark `#netutil` \
   nmap nikto chkrootkit wavemon namebench apache2-utils mailutils `#netutils` \
-  iftop iptraf `#netutils` \
+  iftop iptraf sshfs `#netutils` \
   virtualenv python2.7-examples python-pip `#python` \
   build-essential `#build-tools` \
   shellcheck sqlitebrowser yamllint highlight gawk `#dev-tools` \
