@@ -13,8 +13,8 @@ set -e
 
 # passwordless sudo for local box
 check_sudo () {
-  if ! sudo grep drew /etc/sudoers; then
-    sudo sh -c 'echo "drew ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
+  if ! sudo grep $USER /etc/sudoers; then
+    echo "$USER ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
   fi
 }
 
@@ -66,8 +66,8 @@ set_shell_stuff () {
   if ! grep rdesktop "$HOME"/.bashrc; then
     cat <<EOF >> $HOME/.bashrc
 export PATH="$HOME/.local/bin:$PATH"
-alias xclip='xclip -selection clipboard'
-alias rdesktop='rdesktop -g 1280x720 -r clipboard:CLIPBOARD -r disk:share=/home/drew'
+alias xclip="xclip -selection clipboard"
+alias rdesktop="rdesktop -g 1280x720 -r clipboard:CLIPBOARD -r disk:share=/home/$USER"
 alias get_ip='_get_ip() { VBoxManage guestproperty get "$1" "/VirtualBox/GuestInfo/Net/1/V4/IP";}; _get_ip'
 EOF
   fi
@@ -77,7 +77,7 @@ EOF
 # echo debconf popularity-contest/participate select false | sudo debconf-set-selections
 # sudo dpkg-reconfigure popularity-contest
 
-# oracle 8, google chrome, keybase, skype, slack, atom, insync
+# oracle 8, google chrome, keybase, skype, slack, atom, insync, docker
 extra_repos () {
   APT_DIR="/etc/apt/sources.list.d"
   if [ ! -f "$APT_DIR"/webupd8team-ubuntu-java-artful.list ]; then
@@ -114,6 +114,11 @@ extra_repos () {
   if [ ! -f "$APT_DIR"/insync.list ]; then
     wget -O - https://d2t3ff60b2tol4.cloudfront.net/services@insynchq.com.gpg.key | sudo apt-key add -
     echo "deb http://apt.insynchq.com/ubuntu $(lsb_release -cs) non-free" | sudo tee "$APT_DIR"/insync.list
+  fi
+
+  if ! grep docker /etc/apt/sources.list; then
+    wget -O - https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   fi
 }
 
@@ -188,7 +193,7 @@ install_apt () {
   xchat pidgin `#chatapps` \
   ansible `#automation` \
   oracle-java8-installer google-chrome-stable keybase `#extra repos` \
-  skypeforlinux slack-desktop atom insync `#extra repos`
+  skypeforlinux slack-desktop atom insync docker-ce `#extra repos`
 }
 
 # Set vim editor
@@ -215,6 +220,12 @@ config_sensors () {
     if ! lsmod | grep coretemp; then
       sudo sensors-detect --auto
     fi
+  fi
+}
+
+add_docker_user () {
+  if ! id -nG $USER | grep docker; then
+    sudo usermod -aG docker $USER
   fi
 }
 
@@ -262,6 +273,7 @@ install_apt
 set_editor
 pip_bits
 config_sensors
+add_docker_user
 install_rvm
 install_atom_plugins
 install_nvm
