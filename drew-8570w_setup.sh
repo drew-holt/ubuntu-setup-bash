@@ -98,10 +98,6 @@ EOF
   fi
 }
 
-## disable popularity-contest XXX how dpkg-reconifgure with debconf selection non-interactively
-# echo debconf popularity-contest/participate select false | sudo debconf-set-selections
-# sudo dpkg-reconfigure popularity-contest
-
 # oracle 8, google chrome, keybase, skype, slack, atom, insync, docker
 extra_repos () {
   APT_DIR="/etc/apt/sources.list.d"
@@ -129,7 +125,6 @@ extra_repos () {
       echo "deb [arch=amd64] https://repo.skype.com/deb stable main" | sudo tee "$APT_DIR"/skype-stable.list
     fi
 
-    # relies on libcurl3 which isn't in bionic, use snap
     if [ ! -f "$APT_DIR"/slack.list ]; then
       wget -O - https://packagecloud.io/slacktechnologies/slack/gpgkey | sudo apt-key add -
       echo "deb https://packagecloud.io/slacktechnologies/slack/debian/ jessie main" | sudo tee "$APT_DIR"/slack.list
@@ -298,7 +293,6 @@ config_sensors () {
 }
 
 add_docker_user () {
-  # XXX bionic with snap create docker group
   if ! getent group docker; then
     sudo groupadd docker
   fi
