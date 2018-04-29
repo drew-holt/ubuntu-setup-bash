@@ -53,19 +53,19 @@ gsettings_personalizations () {
     profile=${profile:1:-1} # remove leading and trailing single quotes
     for i in "${settings[@]}"; do
       gsettings set "org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/" $i
-
-      # remove terminal menubar
-      gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
-
-      # set background
-      gsettings set org.gnome.desktop.screensaver primary-color '#000000000000'
-      gsettings set org.gnome.desktop.screensaver secondary-color '#000000000000'
-      gsettings set org.gnome.desktop.screensaver picture-uri 'file:///home/drew/Pictures/vector-texture-wallpapejpg'
-      gsettings set org.gnome.ControlCenter last-panel 'background'
-      gsettings set org.gnome.desktop.background secondary-color '#000000000000'
-      gsettings set org.gnome.desktop.background primary-color '#000000000000'
-      gsettings set org.gnome.desktop.background picture-uri 'file:///home/drew/Pictures/vector-texture-wallpaper.jpg'
     done
+
+    # remove terminal menubar
+    gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
+
+    # set background
+    gsettings set org.gnome.desktop.screensaver primary-color '#000000000000'
+    gsettings set org.gnome.desktop.screensaver secondary-color '#000000000000'
+    gsettings set org.gnome.desktop.screensaver picture-uri 'file:///home/drew/Pictures/vector-texture-wallpapejpg'
+    gsettings set org.gnome.ControlCenter last-panel 'background'
+    gsettings set org.gnome.desktop.background secondary-color '#000000000000'
+    gsettings set org.gnome.desktop.background primary-color '#000000000000'
+    gsettings set org.gnome.desktop.background picture-uri 'file:///home/drew/Pictures/vector-texture-wallpaper.jpg'
   fi
 
   # setup default apps
