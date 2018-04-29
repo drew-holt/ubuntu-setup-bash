@@ -2,7 +2,8 @@
 """docstring    """
 # Drew Holt <drew@invadelabs.com>
 # python gsettings.py <schema> <key> <value>
-# e.x.: python gsettings.py org.gnome.rhythmbox.encoding-settings media-type "'audio/x-vorbis'"
+# e.x.: python gsettings.py \
+#       org.gnome.rhythmbox.encoding-settings media-type "'audio/x-vorbis'"
 
 import sys
 
@@ -17,7 +18,8 @@ PROCESSED = {}
 
 for key, value in sorted(FIRST_SPLIT):
     second_split = value.split(' ', 1)  # create list of '<key>,<value>'
-    third_split = {second_split[0]: second_split[1]} # create dictionary "<key>: '<value>'"
+    # create dictionary "<key>: '<value>'"
+    third_split = {second_split[0]: second_split[1]}
     # dictionary handle multiple schema in "<schema>: ['key': '<value>']"
     PROCESSED.setdefault(key, []).append(third_split)
 

@@ -274,7 +274,7 @@ gui_tweaks () {
 
 # install pip packages
 pip_bits () {
-  pip_pkgs=(youtube-dl awscli)
+  pip_pkgs=(youtube-dl awscli pylint pycodestyle)
 
   for i in "${pip_pkgs[@]}"; do
     if ! pip show "$i" >/dev/null; then
@@ -305,7 +305,13 @@ add_docker_user () {
 # atom plugins
 install_atom_plugins () {
   if [ -f "$(which atom)" ]; then
-    apm_pkgs=(atom-beautify autocomplete-python busy-signal django-templates intentions linter linter-ui-default script script-runner teletype)
+    apm_pkgs=(atom-beautify autocomplete-python busy-signal django-templates \
+    intentions linter linter-ui-default script script-runner teletype \
+    file-icons language-chef git-plus linter-rubocop emmet minimap \
+    linter-ansible-linting linter-ansible-syntax linter-cookstyle \
+    linter-docker linter-jsonlint linter-jenkins linter-markdown linter-php \
+    linter-pycodestyle linter-pylint linter-ruby linter-travis-lint \
+    linter-vagrant-validate linter-js-yaml)
 
     for i in "${apm_pkgs[@]}"; do
       if [ ! -d $HOME/.atom/packages/$i ]; then
