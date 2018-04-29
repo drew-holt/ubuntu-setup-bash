@@ -2,8 +2,9 @@
 # Drew Holt <drew@invadelabs.com>
 # script to setup newly installed local environment in ubuntu 17.10 or 18.04
 #
-# shellcheck disable=SC1001,SC2086,SC2119,SC2120
+# shellcheck disable=SC1001,SC1090,SC2086,SC2119,SC2120
 # SC1001: This \c will be a regular 'c' in this context.
+# SC1090: Can't follow non-constant source. Use a directive to specify location.
 # SC2086: Double quote to prevent globbing and word splitting.
 # SC2119: Use set_shell_stuff "$@" if function's $1 should mean script's $1.
 # SC2120: set_aliases references arguments, but none are ever passed.
@@ -309,9 +310,11 @@ install_atom_plugins () {
     intentions linter linter-ui-default script script-runner teletype \
     file-icons language-chef git-plus linter-rubocop emmet minimap \
     linter-ansible-linting linter-ansible-syntax linter-cookstyle \
-    linter-docker linter-jsonlint linter-jenkins linter-markdown linter-php \
+    linter-docker linter-jsonlint linter-markdown linter-php \
     linter-pycodestyle linter-pylint linter-ruby linter-travis-lint \
-    linter-vagrant-validate linter-js-yaml)
+    linter-vagrant-validate linter-js-yaml linter-terraform-syntax \
+    language-terraform linter-htmllint linter-tidy linter-ansible-syntax \
+    language-ansible)
 
     for i in "${apm_pkgs[@]}"; do
       if [ ! -d $HOME/.atom/packages/$i ]; then
@@ -326,6 +329,18 @@ install_nvm () {
   if [ ! -d "$HOME"/.nvm ]; then
     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
   fi
+
+  if [ ! -f "$(which npm)" ]; then
+    nvm install 9
+  fi
+
+  npm_pkgs=(htmllint html-validator jsonlint dockerlint)
+
+  for i in "${npm_pkgs[@]}"; do
+    if [ ! -f "$(which $i)" ]; then
+      npm -g $i
+    fi
+  done
 }
 
 # rvm install
@@ -340,7 +355,17 @@ install_rvm () {
         gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
     esac
     \curl -sSL https://get.rvm.io | bash -s stable --ruby
+
+    source $HOME/.rvm/scripts/rvm
   fi
+
+  gem_list=(cookstyle travis)
+
+  for i in "${gem_list[@]}"; do
+    if ! gem list | grep $i; then
+      gem install $i
+    fi
+  done
 }
 
 date
