@@ -1,0 +1,18 @@
+org.gnome.rhythmbox.library layout-filename '%tN - %tt'
+org.gnome.rhythmbox.library add-dir ''
+org.gnome.rhythmbox.library layout-path '%aa/%at'
+org.gnome.rhythmbox.library strip-chars false
+org.gnome.rhythmbox.encoding-settings transcode-lossless false
+org.gnome.rhythmbox.encoding-settings media-type 'audio/x-vorbis'
+org.gnome.rhythmbox.encoding-settings media-type-presets {'audio/x-vorbis': 'Ubuntu', 'audio/mpeg': 'Ubuntu'}
+org.gnome.rhythmbox.source paned-position 180
+org.gnome.rhythmbox.source sorting ('Artist', true)
+org.gnome.rhythmbox.source show-browser true
+org.gnome.rhythmbox.source search-type 'search-match'
+org.gnome.shell.overrides dynamic-workspaces true
+org.gnome.shell.overrides focus-change-on-pointer-rest true
+org.gnome.shell.overrides workspaces-only-on-primary true
+org.gnome.shell.overrides attach-modal-dialogs true
+org.gnome.shell.overrides edge-tiling true
+org.gnome.system.proxy.https host ''
+org.gnome.system.proxy.https port 0
