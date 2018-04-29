@@ -1,34 +1,36 @@
 #!/usr/bin/python
+"""docstring    """
 # Drew Holt <drew@invadelabs.com>
 # python gsettings.py <schema> <key> <value>
 # e.x.: python gsettings.py org.gnome.rhythmbox.encoding-settings media-type "'audio/x-vorbis'"
 
 import sys
 
-file = open("gsettings_output.txt", "r")
+GSETTINGS = open("gsettings_output.txt", "r")
 
-raw = file.read().splitlines()
+RAW = GSETTINGS.read().splitlines()
 
-first_split = list(s.split(' ', 1) for s in raw) # create list of "<schema>, '<key> <value>'"
+# create list of "<schema>, '<key> <value>'"
+FIRST_SPLIT = list(s.split(' ', 1) for s in RAW)
 
-processed = {}
+PROCESSED = {}
 
-for key, value in sorted(first_split):
-  second_split = value.split(' ', 1) # create list of '<key>,<value>'
-  third_split = {second_split[0]:second_split[1]} # create dictionary "<key>: '<value>'"
-  # dictionary handle multiple schema in "<schema>: ['key': '<value>']"
-  processed.setdefault(key, []).append(third_split) 
+for key, value in sorted(FIRST_SPLIT):
+    second_split = value.split(' ', 1)  # create list of '<key>,<value>'
+    third_split = {second_split[0]: second_split[1]} # create dictionary "<key>: '<value>'"
+    # dictionary handle multiple schema in "<schema>: ['key': '<value>']"
+    PROCESSED.setdefault(key, []).append(third_split)
 
 try:
-  a = sys.argv[1]
-  b = sys.argv[2]
-  c = sys.argv[3]
-  if processed[a][0][b] == c:
-    print "set"
-  else:
-    print "not set"
-except:
-  print "error"
-  sys.exit(1)
+    A = sys.argv[1]
+    B = sys.argv[2]
+    C = sys.argv[3]
+    if PROCESSED[A][0][B] == C:
+        print "set"
+    else:
+        print "not set"
+except (KeyError, IndexError):
+    print "error"
+    sys.exit(1)
 
-file.close()
+GSETTINGS.close()
