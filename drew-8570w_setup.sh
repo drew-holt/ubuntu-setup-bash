@@ -60,18 +60,19 @@ gsettings_personalizations () {
     gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
 
     # set background
+    wget -O $HOME/Pictures/vector.jpg https://imgur.com/download/nhUeOpI
     gsettings set org.gnome.desktop.screensaver primary-color '#000000000000'
     gsettings set org.gnome.desktop.screensaver secondary-color '#000000000000'
-    gsettings set org.gnome.desktop.screensaver picture-uri 'file:///home/drew/Pictures/vector-texture-wallpapejpg'
+    gsettings set org.gnome.desktop.screensaver picture-uri 'file:///home/drew/Pictures/vector.jpg'
     gsettings set org.gnome.ControlCenter last-panel 'background'
     gsettings set org.gnome.desktop.background secondary-color '#000000000000'
     gsettings set org.gnome.desktop.background primary-color '#000000000000'
-    gsettings set org.gnome.desktop.background picture-uri 'file:///home/drew/Pictures/vector-texture-wallpaper.jpg'
+    gsettings set org.gnome.desktop.background picture-uri 'file:///home/drew/Pictures/vector.jpg'
   fi
 
   # setup default apps
   if [ ! -f $HOME/.config/mimeapps.list ]; then
-    curl -o $HOME/.config/mimeapps.list https://raw.githubusercontent.com/drew-holt/ubuntu-setup-bash/master/mimeapps.list
+    wget -O $HOME/.config/mimeapps.list https://raw.githubusercontent.com/drew-holt/ubuntu-setup-bash/master/mimeapps.list
   fi
 
   # remove clutter
@@ -328,17 +329,21 @@ install_atom_plugins () {
 install_nvm () {
   if [ ! -d "$HOME"/.nvm ]; then
     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
-  fi
 
-  if [ ! -f "$(which npm)" ]; then
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
     nvm install 9
+
+    source $HOME/.bashrc
   fi
 
   npm_pkgs=(htmllint html-validator jsonlint dockerlint)
 
   for i in "${npm_pkgs[@]}"; do
     if [ ! -f "$(which $i)" ]; then
-      npm -g $i
+      npm install -g $i
     fi
   done
 }
