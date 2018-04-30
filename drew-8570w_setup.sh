@@ -211,7 +211,7 @@ install_apt () {
   wait_apt;
   DEBIAN_FRONTEND=noninteractive `#no prompting` sudo apt-get install -qy \
     gnome-shell-extension-top-icons-plus gnome-shell-extension-dashtodock `#gui` \
-    keepass2 synergy gnome-tweak-tool chrome-gnome-shell `#tools` \
+    keepass2 synergy gnome-tweak-tool chrome-gnome-shell xclip `#tools` \
     vim vim-scripts vim-runtime vim-doc curl xd libguestfs-tools `#systools` \
     lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl `#systools` \
     ubuntu-restricted-extras gimp audacity vlc vlc-plugin-fluidsynth ffmpeg atomicparsley `#media` \
