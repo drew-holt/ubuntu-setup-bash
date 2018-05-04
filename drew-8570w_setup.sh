@@ -276,7 +276,7 @@ gui_tweaks () {
 
 # install pip packages
 pip_bits () {
-  pip_pkgs=(youtube-dl awscli pylint pycodestyle ansible-lint)
+  pip_pkgs=(youtube-dl awscli pylint pycodestyle ansible-lint docker-py)
 
   for i in "${pip_pkgs[@]}"; do
     if ! pip show "$i" >/dev/null; then
@@ -364,7 +364,7 @@ install_rvm () {
     source $HOME/.rvm/scripts/rvm
   fi
 
-  gem_list=(cookstyle travis)
+  gem_list=(cookstyle travis mdl)
 
   for i in "${gem_list[@]}"; do
     if ! gem list | grep $i; then
