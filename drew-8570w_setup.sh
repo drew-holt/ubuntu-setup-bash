@@ -276,7 +276,7 @@ gui_tweaks () {
 
 # install pip packages
 pip_bits () {
-  pip_pkgs=(youtube-dl awscli pylint pycodestyle ansible-lint docker-py)
+  pip_pkgs=(youtube-dl awscli pylint pycodestyle ansible-lint docker-py httpstat)
 
   for i in "${pip_pkgs[@]}"; do
     if ! pip show "$i" >/dev/null; then
