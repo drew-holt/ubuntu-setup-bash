@@ -29,6 +29,9 @@ gsettings_personalizations () {
     gsettings set org.gnome.desktop.peripherals.mouse natural-scroll true
     gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
 
+    # set to false when gaming on touch pad, true when not gaming
+    # gsettings set org.gnome.desktop.peripherals.touchpad disable-while-typing false
+
     # switch alt+tab to windows, not applications. GUI under 'Settings > Keyboard'
     gsettings set org.gnome.desktop.wm.keybindings switch-applications "[]"
     gsettings set org.gnome.desktop.wm.keybindings switch-applications-backward "[]"
