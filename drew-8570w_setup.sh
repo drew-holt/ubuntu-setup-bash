@@ -71,6 +71,9 @@ gsettings_personalizations () {
     gsettings set org.gnome.desktop.background secondary-color '#000000000000'
     gsettings set org.gnome.desktop.background primary-color '#000000000000'
     gsettings set org.gnome.desktop.background picture-uri 'file:///home/drew/Pictures/vector.jpg'
+
+    # enable Night Light
+    gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled true
   fi
 
   # setup default apps
