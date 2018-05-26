@@ -345,7 +345,7 @@ install_nvm () {
     source $HOME/.bashrc
   fi
 
-  npm_pkgs=(htmllint html-validator jsonlint dockerlint)
+  npm_pkgs=(htmllint html-validator jsonlint dockerlint lighthouse)
 
   for i in "${npm_pkgs[@]}"; do
     if [ ! -f "$(which $i)" ]; then
