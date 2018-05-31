@@ -370,7 +370,7 @@ install_rvm () {
     source $HOME/.rvm/scripts/rvm
   fi
 
-  gem_list=(cookstyle travis mdl)
+  gem_list=(cookstyle travis mdl gitlab)
 
   for i in "${gem_list[@]}"; do
     if ! gem list | grep $i; then
