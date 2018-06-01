@@ -102,6 +102,7 @@ export PATH="$HOME/.local/bin:$PATH"
 alias xclip="xclip -selection clipboard"
 alias rdesktop="rdesktop -g 1280x720 -r clipboard:CLIPBOARD -r disk:share=/home/$USER"
 alias get_ip='_get_ip() { VBoxManage guestproperty get "$1" "/VirtualBox/GuestInfo/Net/1/V4/IP";}; _get_ip'
+alias ans-cron='ansible-playbook -i hosts site.yml --diff --start-at-task="cron; git clone --depth 1 invadelabs.com/cron-invadelabs"'
 EOF
   fi
 }
