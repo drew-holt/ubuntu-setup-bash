@@ -103,6 +103,7 @@ alias xclip="xclip -selection clipboard"
 alias rdesktop="rdesktop -g 1280x720 -r clipboard:CLIPBOARD -r disk:share=/home/$USER"
 alias get_ip='_get_ip() { VBoxManage guestproperty get "$1" "/VirtualBox/GuestInfo/Net/1/V4/IP";}; _get_ip'
 alias ans-cron='ansible-playbook -i hosts site.yml --diff --start-at-task="cron; git clone --depth 1 invadelabs.com/cron-invadelabs"'
+alias git-reset='git fetch origin; git reset --hard origin/master'
 EOF
   fi
 }
@@ -127,27 +128,27 @@ extra_repos () {
     echo "deb http://prerelease.keybase.io/deb stable main" | sudo tee "$APT_DIR"/keybase.list
   fi
 
-  # skype slack atom docker use repos in artful, bionic use snaps
+
+  if [ ! -f "$APT_DIR"/slack.list ]; then
+    wget -O - https://packagecloud.io/slacktechnologies/slack/gpgkey | sudo apt-key add -
+    echo "deb https://packagecloud.io/slacktechnologies/slack/debian/ any main" | sudo tee "$APT_DIR"/slack.list
+  fi
+
+  if [ ! -f "$APT_DIR"/atom.list ]; then
+    wget -O - https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
+    echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" | sudo tee "$APT_DIR"/atom.list
+  fi
+
+  if [ ! -f "$APT_DIR"/insync.list ]; then
+    wget -O - https://d2t3ff60b2tol4.cloudfront.net/services@insynchq.com.gpg.key | sudo apt-key add -
+    echo "deb http://apt.insynchq.com/ubuntu $(lsb_release -cs) non-free" | sudo tee "$APT_DIR"/insync.list
+  fi
+
+  # skype docker use repos in artful, bionic use snaps
   if [ "$(lsb_release -cs)" == "artful" ]; then
     if [ ! -f "$APT_DIR"/skype-stable.list ]; then
       wget -O - https://repo.skype.com/data/SKYPE-GPG-KEY | sudo apt-key add -
       echo "deb [arch=amd64] https://repo.skype.com/deb stable main" | sudo tee "$APT_DIR"/skype-stable.list
-    fi
-
-    if [ ! -f "$APT_DIR"/slack.list ]; then
-      wget -O - https://packagecloud.io/slacktechnologies/slack/gpgkey | sudo apt-key add -
-      echo "deb https://packagecloud.io/slacktechnologies/slack/debian/ jessie main" | sudo tee "$APT_DIR"/slack.list
-    fi
-
-    if [ ! -f "$APT_DIR"/atom.list ]; then
-      wget -O - https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
-      echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" | sudo tee "$APT_DIR"/atom.list
-    fi
-
-    # XXX fix for bionic
-    if [ ! -f "$APT_DIR"/insync.list ]; then
-      wget -O - https://d2t3ff60b2tol4.cloudfront.net/services@insynchq.com.gpg.key | sudo apt-key add -
-      echo "deb http://apt.insynchq.com/ubuntu $(lsb_release -cs) non-free" | sudo tee "$APT_DIR"/insync.list
     fi
 
     if ! grep docker /etc/apt/sources.list; then
@@ -184,7 +185,7 @@ init_etckeeper () {
     wait_apt; sudo apt-get install -qy etckeeper
 
     # set github here
-    git config --global user.name "Drew Holt"
+    git config --global user.name "Drew Holt"  # XXX fix for bionic
     git config --global user.email "drewderivative@gmail.com"
 
     sudo etckeeper init
@@ -211,10 +212,10 @@ install_apt () {
   # install all the things
   case "$(lsb_release -cs)" in
     artful)
-      EXTRA="atom skypeforlinux slack-desktop docker-ce insync"
+      EXTRA="skypeforlinux docker-ce"
       ;;
     bionic)
-      EXTRA="docker.io"
+      EXTRA="atom insync slack-desktop docker.io"
   esac
   wait_apt;
   DEBIAN_FRONTEND=noninteractive `#no prompting` sudo apt-get install -qy \
@@ -240,7 +241,7 @@ install_apt () {
 }
 
 install_snaps () {
-  snap_pkgs=(atom slack skype kubectl)
+  snap_pkgs=(skype kubectl)
   for i in "${snap_pkgs[@]}"; do
     if ! snap list | grep $i; then
       sudo snap install $i --classic
