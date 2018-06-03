@@ -44,7 +44,7 @@ gsettings_personalizations () {
         gsettings set org.gnome.shell favorite-apps "['google-chrome.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'libreoffice-startcenter.desktop', 'sqlitebrowser.desktop', 'qBittorrent.desktop', 'audacity.desktop', 'atom.desktop', 'skypeforlinux.desktop', 'org.gnome.baobab.desktop', 'keepass2.desktop', 'slack.desktop', 'vlc.desktop', 'xchat.desktop', 'wireshark.desktop', 'virtualbox.desktop']"
         ;;
       bionic)
-        gsettings set org.gnome.shell favorite-apps "['google-chrome.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'libreoffice-startcenter.desktop', 'sqlitebrowser.desktop', 'qbittorrent.desktop', 'audacity.desktop', 'atom_atom.desktop', 'skype_skypeforlinux.desktop', 'org.gnome.baobab.desktop', 'keepass2.desktop', 'slack_slack.desktop', 'vlc.desktop', 'xchat.desktop', 'wireshark.desktop']"
+        gsettings set org.gnome.shell favorite-apps "['google-chrome.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'libreoffice-startcenter.desktop', 'sqlitebrowser.desktop', 'qbittorrent.desktop', 'audacity.desktop', 'atom.desktop', 'skype_skypeforlinux.desktop', 'org.gnome.baobab.desktop', 'keepass2.desktop', 'slack.desktop', 'vlc.desktop', 'xchat.desktop', 'wireshark.desktop', 'virtualbox.desktop']"
     esac
 
     # set gnome-terminal colors
