@@ -104,6 +104,7 @@ alias rdesktop="rdesktop -g 1280x720 -r clipboard:CLIPBOARD -r disk:share=/home/
 alias get_ip='_get_ip() { VBoxManage guestproperty get "$1" "/VirtualBox/GuestInfo/Net/1/V4/IP";}; _get_ip'
 alias ans-cron='ansible-playbook -i hosts site.yml --diff --start-at-task="cron; git clone --depth 1 invadelabs.com/cron-invadelabs"'
 alias git-reset='git fetch origin; git reset --hard origin/master'
+alias git-check='git branch; git status; git diff'
 EOF
   fi
 }
