@@ -113,6 +113,11 @@ EOF
 extra_repos () {
   APT_DIR="/etc/apt/sources.list.d"
 
+  if [ ! -f "$APT_DIR"/atlassian-hipchat4.list ]; then
+    echo "deb https://atlassian.artifactoryonline.com/atlassian/hipchat-apt-client stretch main" | sudo tee "$APT_DIR"/atlassian-hipchat4.list
+    wget -O - https://atlassian.artifactoryonline.com/atlassian/api/gpg/key/public | sudo apt-key add -
+  fi
+
   if [ ! -f "$APT_DIR"/webupd8team-ubuntu-java-"$(lsb_release -cs)".list ]; then
     sudo add-apt-repository -y ppa:webupd8team/java
     echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
@@ -237,7 +242,7 @@ install_apt () {
     lynis pandoc apt-transport-https `#misc` \
     xchat pidgin `#chatapps` \
     ansible `#automation` \
-    oracle-java8-installer google-chrome-stable keybase`#extra repos` \
+    oracle-java8-installer google-chrome-stable keybase hipchat4 `#extra repos` \
     $EXTRA
 }
 
@@ -359,21 +364,21 @@ install_nvm () {
 
 # rvm install
 install_rvm () {
-  if [ ! -d "$HOME"/.rvm ]; then
-    case "$(lsb_release -cs)" in
-      bionic)
-        IP="$(python -c 'import socket; print socket.gethostbyname("keys.gnupg.net")')"
-        gpg --keyserver hkp://$IP --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-        ;;
-      *)
-        gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-    esac
-    \curl -sSL https://get.rvm.io | bash -s stable --ruby
+  # switching to rbenv at some point
+  # if [ ! -d "$HOME"/.rvm ]; then
+  #   case "$(lsb_release -cs)" in
+  #     bionic)
+  #       IP="$(python -c 'import socket; print socket.gethostbyname("keys.gnupg.net")')"
+  #       gpg --keyserver hkp://$IP --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+  #       ;;
+  #     *)
+  #       gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+  #   esac
+  #   \curl -sSL https://get.rvm.io | bash -s stable --ruby
+  #   source $HOME/.rvm/scripts/rvm
+  # fi
 
-    source $HOME/.rvm/scripts/rvm
-  fi
-
-  gem_list=(cookstyle travis mdl gitlab)
+  gem_list=(cookstyle travis mdl gitlab rubocop)
 
   for i in "${gem_list[@]}"; do
     if ! gem list | grep $i; then
