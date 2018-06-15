@@ -99,12 +99,22 @@ set_shell_stuff () {
   if ! grep rdesktop "$HOME"/.bashrc; then
     cat <<EOF >> $HOME/.bashrc
 export PATH="$HOME/.local/bin:$PATH"
+
+export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
+export HISTSIZE=100000                   # big big history
+export HISTFILESIZE=100000               # big big history
+shopt -s histappend                      # append to history, don't overwrite it
+
+# Save and reload the history after each command finishes
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
 alias xclip="xclip -selection clipboard"
 alias rdesktop="rdesktop -g 1280x720 -r clipboard:CLIPBOARD -r disk:share=/home/$USER"
 alias get_ip='_get_ip() { VBoxManage guestproperty get "$1" "/VirtualBox/GuestInfo/Net/1/V4/IP";}; _get_ip'
 alias ans-cron='ansible-playbook -i hosts site.yml --diff --start-at-task="cron; git clone --depth 1 invadelabs.com/cron-invadelabs"'
 alias git-reset='git fetch origin; git reset --hard origin/master'
 alias git-check='git branch; git status; git diff'
+alias git-pers="git config --global user.email 'drewderivative@gmail.com'; export GPGKEY=CA521CE38DD9D8E586AD18607A27C99359698874"
 EOF
   fi
 }
@@ -218,10 +228,10 @@ install_apt () {
   # install all the things
   case "$(lsb_release -cs)" in
     artful)
-      EXTRA="atom insync slack-desktop docker-ce skypeforlinux"
+      EXTRA="docker-ce skypeforlinux"
       ;;
     bionic)
-      EXTRA="atom insync slack-desktop docker.io"
+      EXTRA="docker.io"
   esac
   wait_apt;
   DEBIAN_FRONTEND=noninteractive `#no prompting` sudo apt-get install -qy \
@@ -244,6 +254,7 @@ install_apt () {
     xchat pidgin `#chatapps` \
     ansible `#automation` \
     oracle-java8-installer google-chrome-stable keybase hipchat4 `#extra repos` \
+    atom insync slack-desktop `# extra repos` \
     $EXTRA
 }
 
@@ -292,9 +303,10 @@ gui_tweaks () {
 # install pip packages
 pip_bits () {
   pip_pkgs=(youtube-dl awscli pylint pycodestyle ansible-lint docker-py httpstat)
+  pip_installed=$(pip list | cut -f1 -d" ")
 
   for i in "${pip_pkgs[@]}"; do
-    if ! pip show "$i" >/dev/null; then
+    if ! echo $pip_installed | grep $i; then
       pip install $i
     fi
   done
