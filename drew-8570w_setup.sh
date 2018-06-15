@@ -303,7 +303,7 @@ gui_tweaks () {
 # install pip packages
 pip_bits () {
   pip_pkgs=(youtube-dl awscli pylint pycodestyle ansible-lint docker-py httpstat)
-  pip_installed=$(pip list | cut -f1 -d" ")
+  pip_installed=$(pip list | cut -f1 -d" " | xargs printf %s" ")
 
   for i in "${pip_pkgs[@]}"; do
     if ! echo $pip_installed | grep $i; then
@@ -392,9 +392,10 @@ install_rvm () {
   # fi
 
   gem_list=(cookstyle travis mdl gitlab rubocop)
+  gem_installed=$(gem list | cut -f1 -d" " | xargs printf %s" ")
 
   for i in "${gem_list[@]}"; do
-    if ! gem list | grep $i; then
+    if ! echo $gem_installed | grep $i; then
       gem install $i
     fi
   done
