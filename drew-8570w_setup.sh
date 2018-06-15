@@ -226,6 +226,7 @@ install_apt () {
   wait_apt;
   DEBIAN_FRONTEND=noninteractive `#no prompting` sudo apt-get install -qy \
     gnome-shell-extension-top-icons-plus gnome-shell-extension-dashtodock `#gui` \
+    gnome-shell-extension-system-monitor `#gui` \
     keepass2 synergy gnome-tweak-tool chrome-gnome-shell xclip gtk-recordmydesktop `#tools` \
     vim vim-scripts vim-runtime vim-doc curl xd libguestfs-tools `#systools` \
     lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl `#systools` \
@@ -267,7 +268,7 @@ gui_tweaks () {
   if [ "$(gsettings get org.gnome.shell enabled-extensions)" == "@as []" ]; then
     gnome-shell --replace &
 
-    gsettings set org.gnome.shell enabled-extensions "['dash-to-dock@micxgx.gmail.com', 'TopIcons@phocean.net']"
+    gsettings set org.gnome.shell enabled-extensions "['dash-to-dock@micxgx.gmail.com', 'TopIcons@phocean.net', 'system-monitor@paradoxxx.zero.gmail.com']"
 
     # dash to dock
     gsettings set org.gnome.shell.extensions.dash-to-dock preferred-monitor 0
