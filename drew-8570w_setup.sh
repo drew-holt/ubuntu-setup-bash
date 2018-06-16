@@ -144,11 +144,11 @@ extra_repos () {
     echo "deb http://prerelease.keybase.io/deb stable main" | sudo tee "$APT_DIR"/keybase.list
   fi
 
-
-  if [ ! -f "$APT_DIR"/slack.list ]; then
-    wget -O - https://packagecloud.io/slacktechnologies/slack/gpgkey | sudo apt-key add -
-    echo "deb https://packagecloud.io/slacktechnologies/slack/debian/ any main" | sudo tee "$APT_DIR"/slack.list
-  fi
+  # no release avail
+  # if [ ! -f "$APT_DIR"/slack.list ]; then
+  #   wget -O - https://packagecloud.io/slacktechnologies/slack/gpgkey | sudo apt-key add -
+  #   echo "deb https://packagecloud.io/slacktechnologies/slack/debian/ any main" | sudo tee "$APT_DIR"/slack.list
+  # fi
 
   if [ ! -f "$APT_DIR"/atom.list ]; then
     wget -O - https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
@@ -254,7 +254,7 @@ install_apt () {
     xchat pidgin `#chatapps` \
     ansible `#automation` \
     oracle-java8-installer google-chrome-stable keybase hipchat4 `#extra repos` \
-    atom insync slack-desktop `# extra repos` \
+    atom insync `# extra repos` \
     $EXTRA
 }
 
@@ -377,6 +377,7 @@ install_nvm () {
 
 # rvm install
 install_rvm () {
+  true
   # switching to rbenv at some point
   # if [ ! -d "$HOME"/.rvm ]; then
   #   case "$(lsb_release -cs)" in
@@ -390,15 +391,15 @@ install_rvm () {
   #   \curl -sSL https://get.rvm.io | bash -s stable --ruby
   #   source $HOME/.rvm/scripts/rvm
   # fi
+  #
+  # gem_list=(cookstyle travis mdl gitlab rubocop)
+  # gem_installed=$(gem list | cut -f1 -d" " | xargs printf %s" ")
 
-  gem_list=(cookstyle travis mdl gitlab rubocop)
-  gem_installed=$(gem list | cut -f1 -d" " | xargs printf %s" ")
-
-  for i in "${gem_list[@]}"; do
-    if ! echo $gem_installed | grep $i; then
-      gem install $i
-    fi
-  done
+  # for i in "${gem_list[@]}"; do
+  #   if ! echo $gem_installed | grep $i; then
+  #     gem install $i
+  #   fi
+  # done
 }
 
 date
