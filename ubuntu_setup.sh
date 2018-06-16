@@ -8,8 +8,8 @@
 # SC2119: Use set_shell_stuff "$@" if function's $1 should mean script's $1.
 # SC2120: set_aliases references arguments, but none are ever passed.
 
-set -x
-set -e
+set -x # all executed commands are printed to the terminal
+set -e # exit if any subcommand or pipeline returns a non-zero status
 
 # passwordless sudo for local box
 check_sudo () {
@@ -20,6 +20,11 @@ check_sudo () {
 
 # gnome3 peronalizations and prefrences
 gsettings_personalizations () {
+  # dl background
+  if [ ! -f $HOME/Pictures/vector.jpg ]; then
+    wget -O $HOME/Pictures/vector.jpg https://imgur.com/download/nhUeOpI
+  fi
+
   # settings_list=$(gsettings list-recursively)
   if [[ ! $(gsettings get org.gnome.desktop.interface clock-format) == "'12h'" ]]; then
     # set 12 hour time
@@ -71,8 +76,7 @@ gsettings_personalizations () {
     # remove terminal menubar
     gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
 
-    # set background
-    wget -O $HOME/Pictures/vector.jpg https://imgur.com/download/nhUeOpI
+    # set background, screensaver, desktop colors
     gsettings set org.gnome.desktop.screensaver primary-color '#000000000000'
     gsettings set org.gnome.desktop.screensaver secondary-color '#000000000000'
     gsettings set org.gnome.desktop.screensaver picture-uri 'file:///home/drew/Pictures/vector.jpg'
@@ -169,13 +173,13 @@ extra_repos () {
     echo "deb http://apt.insynchq.com/ubuntu $(lsb_release -cs) non-free" | sudo tee "$APT_DIR"/insync.list
   fi
 
-  # skype docker use repos in artful, bionic use snaps
-  if [ "$(lsb_release -cs)" == "artful" ]; then
-    if ! grep docker /etc/apt/sources.list; then
-      wget -O - https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-      sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-    fi
-  fi
+  # docker use repos in artful, bionic use snaps
+  # if [ "$(lsb_release -cs)" == "artful" ]; then
+  #   if ! grep docker /etc/apt/sources.list; then
+  #     wget -O - https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  #     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  #   fi
+  # fi
 }
 
 # wait for apt lock release
@@ -230,13 +234,6 @@ install_apt () {
   echo postfix postfix/main_mailer_type string 'Local only' | sudo debconf-set-selections
 
   # install all the things
-  case "$(lsb_release -cs)" in
-    artful)
-      EXTRA="docker-ce"
-      ;;
-    bionic)
-      EXTRA="docker.io"
-  esac
   wait_apt;
   DEBIAN_FRONTEND=noninteractive `#no prompting` sudo apt-get install -qy \
     gnome-shell-extension-top-icons-plus gnome-shell-extension-dashtodock `#gui` \
@@ -259,11 +256,11 @@ install_apt () {
     ansible `#automation` \
     oracle-java8-installer google-chrome-stable keybase hipchat4 `#extra repos` \
     atom insync `# extra repos` \
-    $EXTRA
+    docker.io
 }
 
 install_snaps () {
-  snap_pkgs=(skype kubectl)
+  snap_pkgs=(skype slack kubectl)
   for i in "${snap_pkgs[@]}"; do
     if ! snap list | grep $i; then
       sudo snap install $i --classic
