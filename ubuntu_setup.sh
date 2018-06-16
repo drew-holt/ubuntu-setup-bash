@@ -2,8 +2,7 @@
 # Drew Holt <drew@invadelabs.com>
 # script to setup newly installed local environment in ubuntu 17.10 or 18.04
 #
-# shellcheck disable=SC1001,SC1090,SC2086,SC2119,SC2120
-# SC1001: This \c will be a regular 'c' in this context.
+# shellcheck disable=SC1090,SC2086,SC2119,SC2120
 # SC1090: Can't follow non-constant source. Use a directive to specify location.
 # SC2086: Double quote to prevent globbing and word splitting.
 # SC2119: Use set_shell_stuff "$@" if function's $1 should mean script's $1.
@@ -172,11 +171,6 @@ extra_repos () {
 
   # skype docker use repos in artful, bionic use snaps
   if [ "$(lsb_release -cs)" == "artful" ]; then
-    if [ ! -f "$APT_DIR"/skype-stable.list ]; then
-      wget -O - https://repo.skype.com/data/SKYPE-GPG-KEY | sudo apt-key add -
-      echo "deb [arch=amd64] https://repo.skype.com/deb stable main" | sudo tee "$APT_DIR"/skype-stable.list
-    fi
-
     if ! grep docker /etc/apt/sources.list; then
       wget -O - https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
       sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -238,7 +232,7 @@ install_apt () {
   # install all the things
   case "$(lsb_release -cs)" in
     artful)
-      EXTRA="docker-ce skypeforlinux"
+      EXTRA="docker-ce"
       ;;
     bionic)
       EXTRA="docker.io"
@@ -260,7 +254,7 @@ install_apt () {
     virtualenv python2.7-examples python-pip `#python` \
     build-essential `#build-tools` \
     shellcheck sqlitebrowser yamllint highlight gawk php-cli tidy jq `#dev-tools` \
-    lynis pandoc apt-transport-https `#misc` \
+    lynis pandoc apt-transport-https snapd `#misc` \
     xchat pidgin `#chatapps` \
     ansible `#automation` \
     oracle-java8-installer google-chrome-stable keybase hipchat4 `#extra repos` \
@@ -425,7 +419,7 @@ apt_update
 init_etckeeper
 apt_upgrade
 install_apt
-if [ "$(lsb_release -cs)" == "bionic" ]; then install_snaps; fi
+install_snaps
 set_editor
 gui_tweaks
 pip_bits
