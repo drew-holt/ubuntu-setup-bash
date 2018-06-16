@@ -194,7 +194,7 @@ wait_apt () {
 # update repo cache if it's been longer than 2 hours else update for first boot
 apt_update () {
   if [ -f /var/log/first.boot ]; then
-    if [ "$(find /var/cache/apt/pkgcache.bin -mtime 2)" ]; then
+    if ! find /var/cache/apt/pkgcache.bin -mmin -120; then
       wait_apt; sudo apt-get -qy update
     fi
   else
@@ -209,7 +209,7 @@ init_etckeeper () {
     wait_apt; sudo apt-get install -qy etckeeper
 
     # set github here
-    git config --global user.name "Drew Holt"  # XXX fix for bionic
+    git config --global user.name "Drew Holt"
     git config --global user.email "drewderivative@gmail.com"
 
     sudo etckeeper init
@@ -235,7 +235,8 @@ install_apt () {
 
   # install all the things
   wait_apt;
-  DEBIAN_FRONTEND=noninteractive `#no prompting` sudo apt-get install -qy \
+  DEBIAN_FRONTEND=noninteractive `#no prompting` \
+    sudo apt-get install -qy \
     gnome-shell-extension-top-icons-plus gnome-shell-extension-dashtodock `#gui` \
     gnome-shell-extension-system-monitor `#gui` \
     keepass2 synergy gnome-tweak-tool chrome-gnome-shell xclip gtk-recordmydesktop `#tools` \
