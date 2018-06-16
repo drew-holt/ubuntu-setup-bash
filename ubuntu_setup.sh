@@ -21,6 +21,7 @@ check_sudo () {
 
 # gnome3 peronalizations and prefrences
 gsettings_personalizations () {
+  # settings_list=$(gsettings list-recursively)
   if [[ ! $(gsettings get org.gnome.desktop.interface clock-format) == "'12h'" ]]; then
     # set 12 hour time
     gsettings set org.gnome.desktop.interface clock-format 12h
@@ -32,6 +33,21 @@ gsettings_personalizations () {
     # set to false when gaming on touch pad, true when not gaming
     # gsettings set org.gnome.desktop.peripherals.touchpad disable-while-typing false
 
+    # task bar settings
+    gsettings set org.gnome.desktop.interface clock-show-seconds true
+    gsettings set org.gnome.desktop.interface clock-show-date true
+    gsettings set org.gnome.desktop.interface show-battery-percentage true
+    gsettings set org.gnome.desktop.calendar show-weekdate true
+
+    # disable screen rotation
+    gsettings set org.gnome.settings-daemon.peripherals.touchscreen orientation-lock true
+
+    # sleep after 1 hour, power button suspends
+    gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 3600
+    gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'suspend'
+    gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
+
+
     # switch alt+tab to windows, not applications. GUI under 'Settings > Keyboard'
     gsettings set org.gnome.desktop.wm.keybindings switch-applications "[]"
     gsettings set org.gnome.desktop.wm.keybindings switch-applications-backward "[]"
@@ -39,13 +55,7 @@ gsettings_personalizations () {
     gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward  "['<Alt><Shift>Tab']"
 
     # set favorite apps in launcher
-    case "$(lsb_release -cs)" in
-      artful)
-        gsettings set org.gnome.shell favorite-apps "['google-chrome.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'libreoffice-startcenter.desktop', 'sqlitebrowser.desktop', 'qBittorrent.desktop', 'audacity.desktop', 'atom.desktop', 'skypeforlinux.desktop', 'org.gnome.baobab.desktop', 'keepass2.desktop', 'slack.desktop', 'vlc.desktop', 'xchat.desktop', 'wireshark.desktop', 'virtualbox.desktop']"
-        ;;
-      bionic)
-        gsettings set org.gnome.shell favorite-apps "['google-chrome.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'libreoffice-startcenter.desktop', 'sqlitebrowser.desktop', 'qbittorrent.desktop', 'audacity.desktop', 'atom.desktop', 'skype_skypeforlinux.desktop', 'org.gnome.baobab.desktop', 'keepass2.desktop', 'slack.desktop', 'vlc.desktop', 'xchat.desktop', 'wireshark.desktop', 'virtualbox.desktop']"
-    esac
+    gsettings set org.gnome.shell favorite-apps "['google-chrome.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'libreoffice-startcenter.desktop', 'sqlitebrowser.desktop', 'qbittorrent.desktop', 'audacity.desktop', 'hipchat4.desktop', 'atom.desktop', 'skype_skypeforlinux.desktop', 'org.gnome.baobab.desktop', 'keepass2.desktop', 'slack.desktop', 'vlc.desktop', 'xchat.desktop', 'wireshark.desktop', 'virtualbox.desktop']"
 
     # set gnome-terminal colors
     # e.x.: gsettings list-recursively "org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/"
