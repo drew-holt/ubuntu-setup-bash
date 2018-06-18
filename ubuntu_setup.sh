@@ -405,6 +405,18 @@ install_rvm () {
   # done
 }
 
+hashicorp_tools () {
+  if [ ! -f /usr/local/bin/packer ]; then
+    curl -sS -o /tmp/packer_1.2.4_linux_amd64.zip https://releases.hashicorp.com/packer/1.2.4/packer_1.2.4_linux_amd64.zip
+    sudo unzip -d /usr/local/bin /tmp/packer_1.2.4_linux_amd64.zip
+  fi
+
+  if [ ! -f /usr/local/bin/terraform ]; then
+    curl -sS -o /tmp/terraform_0.11.7_linux_amd64.zip https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
+    sudo unzip -d /usr/local/bin /tmp/terraform_0.11.7_linux_amd64.zip
+  fi
+}
+
 date
 
 START=$(date +%s)
@@ -427,6 +439,7 @@ add_docker_user
 install_atom_plugins
 install_nvm
 install_rvm
+hashicorp_tools
 
 END=$(date +%s)
 DIFF=$(echo "$END - $START" | bc)
