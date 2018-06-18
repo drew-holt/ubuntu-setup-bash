@@ -337,15 +337,40 @@ add_docker_user () {
 # atom plugins
 install_atom_plugins () {
   if [ -f "$(which atom)" ]; then
-    apm_pkgs=(atom-beautify autocomplete-python busy-signal django-templates \
-    intentions linter linter-ui-default script script-runner teletype \
-    file-icons language-chef git-plus linter-rubocop emmet minimap \
-    linter-ansible-linting linter-ansible-syntax linter-cookstyle \
-    linter-docker linter-jsonlint linter-markdown linter-php \
-    linter-pycodestyle linter-pylint linter-ruby linter-travis-lint \
-    linter-vagrant-validate linter-js-yaml linter-terraform-syntax \
-    language-terraform linter-htmllint linter-tidy linter-ansible-syntax \
-    language-ansible)
+    apm_pkgs=(atom-beautify \
+    autocomplete-python \
+    busy-signal \
+    django-templates \
+    emmet \
+    git-plus \
+    file-icons \
+    intentions \
+    language-ansible \
+    language-chef \
+    linter \
+    linter-ansible-linting \
+    linter-ansible-syntax \
+    linter-cookstyle \
+    linter-docker \
+    linter-htmllint \
+    linter-js-yaml \
+    linter-jsonlint \
+    linter-markdown \
+    linter-php \
+    linter-pycodestyle \
+    linter-pylint \
+    linter-rubocop \
+    linter-ruby \
+    linter-travis-lint \
+    linter-terraform-syntax \
+    language-terraform \
+    linter-ui-default \
+    linter-vagrant-validate \
+    linter-tidy \
+    minimap \
+    script \
+    script-runner \
+    teletype)
 
     for i in "${apm_pkgs[@]}"; do
       if [ ! -d $HOME/.atom/packages/$i ]; then
