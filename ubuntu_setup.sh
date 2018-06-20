@@ -51,6 +51,8 @@ gsettings_personalizations () {
     gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'suspend'
     gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
 
+    # set timeout to 'Blank screen' to 1 hour
+    # gsettings set org.gnome.desktop.session idle-delay 'uint32 1200'
 
     # switch alt+tab to windows, not applications. GUI under 'Settings > Keyboard'
     gsettings set org.gnome.desktop.wm.keybindings switch-applications "[]"
@@ -127,7 +129,7 @@ alias get_ip='_get_ip() { VBoxManage guestproperty get "$1" "/VirtualBox/GuestIn
 alias ans-cron='ansible-playbook -i hosts site.yml --diff --start-at-task="cron; git clone --depth 1 invadelabs.com/cron-invadelabs"'
 alias git-reset='git fetch origin; git reset --hard origin/master'
 alias git-check='git branch; git status; git diff'
-alias git-pers="git config --global user.email 'drewderivative@gmail.com'; export GPGKEY=CA521CE38DD9D8E586AD18607A27C99359698874"
+alias git-pers="export GPGKEY=CA521CE38DD9D8E586AD18607A27C99359698874"
 alias mnt-d='sudo mount -t cifs -o username=drew,uid=1000,gid=1000 //192.168.1.125/share /mnt/share'
 EOF
   fi
@@ -211,7 +213,7 @@ init_etckeeper () {
 
     # set github here
     git config --global user.name "Drew Holt"
-    git config --global user.email "drewderivative@gmail.com"
+    git config --global user.email "17417299+drew-holt@users.noreply.github.com"
 
     sudo etckeeper init
     sudo find /etc/.git -type d -exec chmod 750 {} \;
