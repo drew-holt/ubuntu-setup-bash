@@ -2,10 +2,11 @@
 # Drew Holt <drew@invadelabs.com>
 # script to setup newly installed local environment in ubuntu 17.10 or 18.04
 #
-# shellcheck disable=SC1090,SC2086,SC2119,SC2120
+# shellcheck disable=SC1090,SC2086,SC2119,SC2016,SC2120
 # SC1090: Can't follow non-constant source. Use a directive to specify location.
 # SC2086: Double quote to prevent globbing and word splitting.
 # SC2119: Use set_shell_stuff "$@" if function's $1 should mean script's $1.
+# SC2016: Expressions don't expand in single quotes, use double quotes for that.
 # SC2120: set_aliases references arguments, but none are ever passed.
 
 set -x # all executed commands are printed to the terminal
@@ -25,7 +26,7 @@ gsettings_personalizations () {
     wget -O $HOME/Pictures/vector.jpg https://imgur.com/download/nhUeOpI
   fi
 
-  # settings_list=$(gsettings list-recursively)
+  # settings_list=$(gsettings list-recursively) XXX check these everytime
   if [[ ! $(gsettings get org.gnome.desktop.interface clock-format) == "'12h'" ]]; then
     # set 12 hour time
     gsettings set org.gnome.desktop.interface clock-format 12h
@@ -81,11 +82,11 @@ gsettings_personalizations () {
     # set background, screensaver, desktop colors
     gsettings set org.gnome.desktop.screensaver primary-color '#000000000000'
     gsettings set org.gnome.desktop.screensaver secondary-color '#000000000000'
-    gsettings set org.gnome.desktop.screensaver picture-uri 'file:///home/drew/Pictures/vector.jpg'
+    gsettings set org.gnome.desktop.screensaver picture-uri "file://$HOME/Pictures/vector.jpg"
     gsettings set org.gnome.ControlCenter last-panel 'background'
     gsettings set org.gnome.desktop.background secondary-color '#000000000000'
     gsettings set org.gnome.desktop.background primary-color '#000000000000'
-    gsettings set org.gnome.desktop.background picture-uri 'file:///home/drew/Pictures/vector.jpg'
+    gsettings set org.gnome.desktop.background picture-uri "file://$HOME/Pictures/vector.jpg"
 
     # enable Night Light
     gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled true
@@ -104,17 +105,24 @@ gsettings_personalizations () {
     fi
   done
 
-  if [ -f examples.desktop ]; then
-    rm examples.desktop
+  if [ -f "$HOME"/examples.desktop ]; then
+    rm "$HOME"/examples.desktop
   fi
 }
 
-# set env and aliases
+# set env and aliases XXX check these everytime
 set_shell_stuff () {
-  if ! grep rdesktop "$HOME"/.bashrc; then
-    cat <<EOF >> $HOME/.bashrc
-export PATH="$HOME/.local/bin:$PATH"
+  if ! grep bashrc "$HOME"/.bash_profile; then
+    cat <<EOF >> $HOME/.bash_profile
+if [ -f ~/.bashrc ]; then
+  . ~/.bashrc
+fi
+EOF
+  fi
 
+  if ! grep rdesktop "$HOME"/.bashrc; then
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> $HOME/.bashrc
+    cat <<EOF >> $HOME/.bashrc
 export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
 export HISTSIZE=100000                   # big big history
 export HISTFILESIZE=100000               # big big history
@@ -213,7 +221,7 @@ init_etckeeper () {
 
     # set github here
     git config --global user.name "Drew Holt"
-    git config --global user.email "17417299+drew-holt@users.noreply.github.com"
+    git config --global user.email "drewderivative@gmail.com"
 
     sudo etckeeper init
     sudo find /etc/.git -type d -exec chmod 750 {} \;
@@ -233,7 +241,7 @@ install_apt () {
   # for wireshark mscorefonts postfix prompts
   echo wireshark-common wireshark-common/install-setuid boolean true | sudo debconf-set-selections
   echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
-  echo postfix postfix/mailname string drew-8570w.local | sudo debconf-set-selections
+  echo postfix postfix/mailname string "$HOSTNAME".local | sudo debconf-set-selections
   echo postfix postfix/main_mailer_type string 'Local only' | sudo debconf-set-selections
 
   # install all the things
@@ -255,6 +263,7 @@ install_apt () {
     virtualenv python2.7-examples python-pip `#python` \
     build-essential `#build-tools` \
     shellcheck sqlitebrowser yamllint highlight gawk php-cli tidy jq `#dev-tools` \
+    libreadline-dev zlib1g-dev libffi-dev gcc-6 g++-6 libssl1.0-dev `# dev-tools rbenv` \
     lynis pandoc apt-transport-https snapd `#misc` \
     xchat pidgin `#chatapps` \
     ansible `#automation` \
@@ -279,7 +288,7 @@ set_editor () {
   fi
 }
 
-# configure dash to dock
+# configure dash to dock XXX check these everytime
 gui_tweaks () {
   if [ "$(gsettings get org.gnome.shell enabled-extensions)" == "@as []" ]; then
     gnome-shell --replace &
@@ -308,7 +317,7 @@ gui_tweaks () {
 # install pip packages
 pip_bits () {
   pip_pkgs=(youtube-dl awscli pylint pycodestyle ansible-lint docker-py httpstat)
-  pip_installed=$(pip list | cut -f1 -d" " | xargs printf %s" ")
+  pip_installed=$(pip list --format=legacy | cut -f1 -d" " | xargs printf %s" ")
 
   for i in "${pip_pkgs[@]}"; do
     if ! echo $pip_installed | grep $i; then
@@ -339,7 +348,8 @@ add_docker_user () {
 # atom plugins
 install_atom_plugins () {
   if [ -f "$(which atom)" ]; then
-    apm_pkgs=(atom-beautify \
+    apm_pkgs=( \
+    atom-beautify \
     autocomplete-python \
     busy-signal \
     django-templates \
@@ -372,7 +382,8 @@ install_atom_plugins () {
     minimap \
     script \
     script-runner \
-    teletype)
+    teletype \
+    )
 
     for i in "${apm_pkgs[@]}"; do
       if [ ! -d $HOME/.atom/packages/$i ]; then
@@ -392,23 +403,37 @@ install_nvm () {
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
     nvm install 9
-
-    source $HOME/.bashrc
   fi
 
-  npm_pkgs=(htmllint html-validator jsonlint dockerlint lighthouse)
+  source $HOME/.bashrc && echo $PATH
 
+  npm_pkgs=(htmllint html-validator jsonlint dockerlint lighthouse)
+  npm_installed=$(npm list -g)
   for i in "${npm_pkgs[@]}"; do
-    if [ ! -f "$(which $i)" ]; then
+    if ! echo $npm_installed | grep $i; then
       npm install -g $i
     fi
   done
 }
 
-# rvm install
-install_rvm () {
-  true
-  # switching to rbenv at some point
+# rbenv install
+install_rbenv () {
+  if [ ! -d "$HOME/.rbenv" ]; then
+    git clone https://github.com/rbenv/rbenv.git $HOME/.rbenv
+    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $HOME/.bash_profile
+    echo 'eval "$(rbenv init -)"' >> $HOME/.bash_profile
+    $HOME/.rbenv/bin/rbenv init -
+    source $HOME/.bash_profile || true
+
+    mkdir -p "$(rbenv root)"/plugins
+    git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
+
+    rbenv install 2.5.1
+    rbenv install 2.3.5
+    rbenv global 2.5.1
+  fi
+
+  # switched to rbenv, for rvm use:
   # if [ ! -d "$HOME"/.rvm ]; then
   #   case "$(lsb_release -cs)" in
   #     bionic)
@@ -421,15 +446,15 @@ install_rvm () {
   #   \curl -sSL https://get.rvm.io | bash -s stable --ruby
   #   source $HOME/.rvm/scripts/rvm
   # fi
-  #
-  # gem_list=(cookstyle travis mdl gitlab rubocop)
-  # gem_installed=$(gem list | cut -f1 -d" " | xargs printf %s" ")
 
-  # for i in "${gem_list[@]}"; do
-  #   if ! echo $gem_installed | grep $i; then
-  #     gem install $i
-  #   fi
-  # done
+  gem_list=(cookstyle travis mdl gitlab rubocop bundler test-kitchen)
+  gem_installed=$(gem list | cut -f1 -d" " | xargs printf %s" ")
+
+  for i in "${gem_list[@]}"; do
+    if ! echo $gem_installed | grep $i; then
+      gem install $i
+    fi
+  done
 }
 
 hashicorp_tools () {
@@ -441,6 +466,12 @@ hashicorp_tools () {
   if [ ! -f /usr/local/bin/terraform ]; then
     curl -sS -o /tmp/terraform_0.11.7_linux_amd64.zip https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
     sudo unzip -d /usr/local/bin /tmp/terraform_0.11.7_linux_amd64.zip
+  fi
+}
+
+chefvm_install () {
+  if [ ! -d $HOME/.chefvm ]; then
+    git clone git://github.com/trobrock/chefvm.git ~/.chefvm
   fi
 }
 
@@ -465,8 +496,9 @@ config_sensors
 add_docker_user
 install_atom_plugins
 install_nvm
-install_rvm
+install_rbenv
 hashicorp_tools
+chefvm_install
 
 END=$(date +%s)
 DIFF=$(echo "$END - $START" | bc)
