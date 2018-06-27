@@ -424,7 +424,11 @@ install_nvm () {
 
   source $HOME/.bashrc && echo $PATH
 
-  npm_pkgs=(htmllint html-validator jsonlint dockerlint lighthouse)
+  npm_pkgs=(htmllint \
+            html-validator \
+            jsonlint \
+            dockerlint \
+            lighthouse)
   npm_installed=$(npm list -g)
   for i in "${npm_pkgs[@]}"; do
     if ! echo $npm_installed | grep $i; then
@@ -464,7 +468,13 @@ install_rbenv () {
   #   source $HOME/.rvm/scripts/rvm
   # fi
 
-  gem_list=(cookstyle travis mdl gitlab rubocop bundler test-kitchen)
+  gem_list=(cookstyle \
+            travis \
+            mdl \
+            gitlab \
+            rubocop \
+            bundler \
+            test-kitchen)
   gem_installed=$(gem list | cut -f1 -d" " | xargs printf %s" ")
 
   for i in "${gem_list[@]}"; do
