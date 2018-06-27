@@ -62,7 +62,24 @@ gsettings_personalizations () {
     gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward  "['<Alt><Shift>Tab']"
 
     # set favorite apps in launcher
-    gsettings set org.gnome.shell favorite-apps "['google-chrome.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'libreoffice-startcenter.desktop', 'sqlitebrowser.desktop', 'qbittorrent.desktop', 'audacity.desktop', 'hipchat4.desktop', 'atom.desktop', 'skype_skypeforlinux.desktop', 'org.gnome.baobab.desktop', 'keepass2.desktop', 'slack.desktop', 'vlc.desktop', 'xchat.desktop', 'wireshark.desktop', 'virtualbox.desktop']"
+    gsettings set org.gnome.shell favorite-apps "['google-chrome.desktop', \
+                                                  'firefox.desktop', \
+                                                  'org.gnome.Nautilus.desktop', \
+                                                  'org.gnome.Terminal.desktop', \
+                                                  'libreoffice-startcenter.desktop', \
+                                                  'sqlitebrowser.desktop', \
+                                                  'qbittorrent.desktop', \
+                                                  'audacity.desktop', \
+                                                  'atom.desktop', \
+                                                  'hipchat4.desktop', \
+                                                  'skype_skypeforlinux.desktop', \
+                                                  'org.gnome.baobab.desktop', \
+                                                  'keepass2.desktop', \
+                                                  'slack.desktop', \
+                                                  'vlc.desktop', \
+                                                  'xchat.desktop', \
+                                                  'wireshark.desktop', \
+                                                  'virtualbox.desktop']"
 
     # set gnome-terminal colors
     # e.x.: gsettings list-recursively "org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/"
