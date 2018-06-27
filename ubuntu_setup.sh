@@ -262,7 +262,7 @@ install_apt () {
     iftop iptraf sshfs cifs-utils ethtool `#netutils` \
     virtualenv python2.7-examples python-pip `#python` \
     build-essential `#build-tools` \
-    shellcheck sqlitebrowser yamllint highlight gawk php-cli tidy jq `#dev-tools` \
+    shellcheck sqlitebrowser yamllint highlight gawk php-cli tidy jq gitk `#dev-tools` \
     libreadline-dev zlib1g-dev libffi-dev gcc-6 g++-6 libssl1.0-dev `# dev-tools rbenv` \
     lynis pandoc apt-transport-https snapd `#misc` \
     xchat pidgin `#chatapps` \
