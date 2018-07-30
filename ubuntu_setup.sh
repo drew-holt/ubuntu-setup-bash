@@ -115,10 +115,17 @@ gsettings_personalizations () {
   fi
 
   # remove clutter
-  folders=(Documents Music Public Templates Videos)
-  for i in "${folders[@]}"; do
+  folders_rm=(Documents Music Public Templates Videos)
+  for i in "${folders_rm[@]}"; do
     if [ -d $i ]; then
       rmdir $i
+    fi
+  done
+
+  folders_mk=(/mnt/hdd /mnt/share)
+  for i in "${folders_mk[@]}"; do
+    if [ -d $i ]; then
+      sudo mkdir $i
     fi
   done
 
