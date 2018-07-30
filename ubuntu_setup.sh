@@ -124,7 +124,7 @@ gsettings_personalizations () {
 
   folders_mk=(/mnt/hdd /mnt/share)
   for i in "${folders_mk[@]}"; do
-    if [ -d $i ]; then
+    if [ ! -d $i ]; then
       sudo mkdir $i
     fi
   done
@@ -352,7 +352,7 @@ pip_bits () {
 
   for i in "${pip_pkgs[@]}"; do
     if ! echo $pip_installed | grep $i; then
-      pip install $i
+      pip install --user $i
     fi
   done
 }
