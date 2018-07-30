@@ -509,6 +509,14 @@ chefvm_install () {
   fi
 }
 
+cerebro_install () {
+  if [ ! -d $HOME/Desktop/cerebro-0.8.1 ]; then
+    wget -O $HOME/Desktop/cerebro-0.8.1.tgz https://github.com/lmenezes/cerebro/releases/download/v0.8.1/cerebro-0.8.1.tgz
+    tar xvf $HOME/Desktop/cerebro-0.8.1.tgz -C $HOME/Desktop
+    rm $HOME/Desktop/cerebro-0.8.1.tgz
+  fi
+}
+
 date
 
 START=$(date +%s)
@@ -534,6 +542,7 @@ install_nvm
 install_rbenv
 hashicorp_tools
 chefvm_install
+cerebro_install
 
 END=$(date +%s)
 DIFF=$(echo "$END - $START" | bc)
