@@ -52,8 +52,8 @@ gsettings_personalizations () {
     gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'suspend'
     gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
 
-    # set timeout to 'Blank screen' to 1 hour
-    # gsettings set org.gnome.desktop.session idle-delay 'uint32 1200'
+    # set timeout 'Blank screen' to 15min
+    gsettings set org.gnome.desktop.session idle-delay uint32 900
 
     # switch alt+tab to windows, not applications. GUI under 'Settings > Keyboard'
     gsettings set org.gnome.desktop.wm.keybindings switch-applications "[]"
