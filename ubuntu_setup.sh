@@ -160,6 +160,13 @@ EOF
   fi
 }
 
+sysctl_cus () {
+  if [ ! -f /etc/sysctl.d/99-vm.swapiness.conf ]; then
+    echo "vm.swappiness = 0" | sudo tee /etc/sysctl.d/99-vm.swapiness.conf
+    sudo systemctl restart procps
+  fi
+}
+
 # oracle 8, google chrome, keybase, skype, slack, atom, insync, docker
 extra_repos () {
   APT_DIR="/etc/apt/sources.list.d"
@@ -510,6 +517,7 @@ START=$(date +%s)
 check_sudo
 gsettings_personalizations
 set_shell_stuff
+sysctl_cus
 extra_repos
 apt_update
 init_etckeeper
