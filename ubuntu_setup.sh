@@ -71,7 +71,6 @@ gsettings_personalizations () {
                                                   'qbittorrent.desktop', \
                                                   'audacity.desktop', \
                                                   'atom.desktop', \
-                                                  'hipchat4.desktop', \
                                                   'skype_skypeforlinux.desktop', \
                                                   'org.gnome.baobab.desktop', \
                                                   'keepass2.desktop', \
@@ -177,11 +176,6 @@ sysctl_cus () {
 # oracle 8, google chrome, keybase, skype, slack, atom, insync, docker
 extra_repos () {
   APT_DIR="/etc/apt/sources.list.d"
-
-  if [ ! -f "$APT_DIR"/atlassian-hipchat4.list ]; then
-    echo "deb https://atlassian.artifactoryonline.com/atlassian/hipchat-apt-client stretch main" | sudo tee "$APT_DIR"/atlassian-hipchat4.list
-    wget -O - https://atlassian.artifactoryonline.com/atlassian/api/gpg/key/public | sudo apt-key add -
-  fi
 
   if [ ! -f "$APT_DIR"/webupd8team-ubuntu-java-"$(lsb_release -cs)".list ]; then
     sudo add-apt-repository -y ppa:webupd8team/java
@@ -298,7 +292,7 @@ install_apt () {
     lynis pandoc apt-transport-https snapd `#misc` \
     xchat pidgin `#chatapps` \
     ansible `#automation` \
-    oracle-java8-installer google-chrome-stable keybase hipchat4 `#extra repos` \
+    oracle-java8-installer google-chrome-stable keybase `#extra repos` \
     atom insync `# extra repos` \
     docker.io
 }
