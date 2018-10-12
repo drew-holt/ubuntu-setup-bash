@@ -121,7 +121,7 @@ gsettings_personalizations () {
     fi
   done
 
-  folders_mk=(/mnt/hdd /mnt/share)
+  folders_mk=(/mnt/hdd /mnt/share $HOME/drewserv)
   for i in "${folders_mk[@]}"; do
     if [ ! -d $i ]; then
       sudo mkdir $i
@@ -143,27 +143,12 @@ fi
 EOF
   fi
 
-  if ! grep rdesktop "$HOME"/.bashrc; then
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> $HOME/.bashrc
-    cat <<EOF >> $HOME/.bashrc
-export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
-export HISTSIZE=100000                   # big big history
-export HISTFILESIZE=100000               # big big history
-shopt -s histappend                      # append to history, don't overwrite it
-
-# Save and reload the history after each command finishes
-# export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
-
-alias xclip="xclip -selection clipboard"
-alias rdesktop="rdesktop -g 1280x720 -r clipboard:CLIPBOARD -r disk:share=/home/$USER"
-alias get_ip='_get_ip() { VBoxManage guestproperty get "$1" "/VirtualBox/GuestInfo/Net/1/V4/IP";}; _get_ip'
-alias ans-cron='ansible-playbook -i hosts site.yml --diff --start-at-task="cron; git clone --depth 1 invadelabs.com/cron-invadelabs"'
-alias git-reset='git fetch origin; git reset --hard origin/master'
-alias git-check='git branch; git status; git diff'
-alias git-pers="export GPGKEY=CA521CE38DD9D8E586AD18607A27C99359698874"
-alias mnt-d='sudo mount -t cifs -o username=drew,uid=1000,gid=1000 //192.168.1.125/share /mnt/share'
-EOF
+  if ! grep .bash_aliases "$HOME"/.bashrc; then
+    echo "No refrence to .bash_aliases in .bashrc - bailing"
+    exit 1
   fi
+
+  wget -O $HOME/.bash_aliases https://raw.githubusercontent.com/drew-holt/ubuntu-setup-bash/master/.bash_aliases
 }
 
 sysctl_cus () {
