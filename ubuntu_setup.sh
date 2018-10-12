@@ -143,9 +143,13 @@ fi
 EOF
   fi
 
-  if ! grep rdesktop "$HOME"/.bashrc; then
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> $HOME/.bashrc
-    cat <<EOF >> $HOME/.bashrc
+  if ! grep .bash_aliases "$HOME"/.bashrc; then
+    echo "No refrence to .bash_aliases in .bashrc - bailing"
+    exit 1
+  fi
+
+  cat <<EOF > $HOME/.bash_aliases
+export PATH="$HOME/.local/bin:$PATH"
 export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
 export HISTSIZE=100000                   # big big history
 export HISTFILESIZE=100000               # big big history
@@ -162,8 +166,10 @@ alias git-reset='git fetch origin; git reset --hard origin/master'
 alias git-check='git branch; git status; git diff'
 alias git-pers="export GPGKEY=CA521CE38DD9D8E586AD18607A27C99359698874"
 alias mnt-d='sudo mount -t cifs -o username=drew,uid=1000,gid=1000 //192.168.1.125/share /mnt/share'
+alias hub-pr="hub pull-request -o --no-edit"
+alias tfp="terraform plan -out=current.plan"
+alias tfa="terraform apply current.plan"
 EOF
-  fi
 }
 
 sysctl_cus () {
