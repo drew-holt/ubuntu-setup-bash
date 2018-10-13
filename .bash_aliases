@@ -18,5 +18,6 @@ alias mnt-d='sudo mount -t cifs -o username=drew,uid=1000,gid=1000 //192.168.1.1
 alias hub-pr="hub pull-request -o --no-edit"
 alias tfp="terraform plan -out=current.plan"
 alias tfa="terraform apply current.plan"
-alias ssh_up='_ssh_up() { ssh "$1" "sudo apt-get update && sudo apt-get -qy dist-upgrade";}; _ssh_up'
+alias ssh_apt='_ssh_apt() { ssh "$1" "sudo apt-get update && sudo apt-get -qy dist-upgrade";}; _ssh_apt'
+alias ssh_dnf='_ssh_dnf() { ssh "$1" "sudo dnf -y upgrade";}; _ssh_dnf'
 alias sshfs_drew='sshfs 192.168.1.125:/srv /home/drew/drewserv'
