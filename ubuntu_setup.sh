@@ -178,12 +178,6 @@ extra_repos () {
     echo "deb http://prerelease.keybase.io/deb stable main" | sudo tee "$APT_DIR"/keybase.list
   fi
 
-  # no release avail
-  # if [ ! -f "$APT_DIR"/slack.list ]; then
-  #   wget -O - https://packagecloud.io/slacktechnologies/slack/gpgkey | sudo apt-key add -
-  #   echo "deb https://packagecloud.io/slacktechnologies/slack/debian/ any main" | sudo tee "$APT_DIR"/slack.list
-  # fi
-
   if [ ! -f "$APT_DIR"/atom.list ]; then
     wget -O - https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
     echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" | sudo tee "$APT_DIR"/atom.list
