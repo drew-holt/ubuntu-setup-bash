@@ -384,6 +384,7 @@ install_atom_plugins () {
     linter-vagrant-validate \
     linter-tidy \
     minimap \
+    remove-whitespace \
     script \
     script-runner \
     teletype \
