@@ -363,6 +363,8 @@ install_atom_plugins () {
     intentions \
     language-ansible \
     language-chef \
+    language-docker \
+    language-hcl \
     linter \
     linter-ansible-linting \
     linter-ansible-syntax \
