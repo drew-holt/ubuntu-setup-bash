@@ -256,7 +256,7 @@ install_apt () {
     gnome-shell-extension-system-monitor `#gui` \
     keepass2 synergy gnome-tweak-tool chrome-gnome-shell xclip gtk-recordmydesktop `#tools` \
     acpi vim vim-scripts vim-runtime vim-doc curl xd libguestfs-tools ecryptfs-utils `#systools` \
-    lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl `#systools` \
+    lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl screen `#systools` \
     ubuntu-restricted-extras gimp audacity vlc vlc-plugin-fluidsynth ffmpeg atomicparsley `#media` \
     openjdk-8-jdk icedtea-8-plugin `#openjdk8` \
     openssh-server fail2ban `#daemon` \
