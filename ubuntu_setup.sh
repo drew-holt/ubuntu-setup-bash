@@ -365,6 +365,7 @@ install_atom_plugins () {
     language-chef \
     language-docker \
     language-hcl \
+    language-groovy \
     linter \
     linter-ansible-linting \
     linter-ansible-syntax \
