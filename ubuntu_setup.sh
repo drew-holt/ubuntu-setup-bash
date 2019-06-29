@@ -264,7 +264,7 @@ install_apt () {
     rdesktop freerdp2-x11 xtightvncviewer sshpass qbittorrent wireshark `#netutil` \
     nmap nikto chkrootkit wavemon namebench apache2-utils mailutils `#netutils` \
     iftop iptraf sshfs cifs-utils ethtool `#netutils` \
-    virtualenv python2.7-examples python-pip `#python` \
+    virtualenv python2.7-examples python-pip python3-pip `#python` \
     build-essential `#build-tools` \
     shellcheck sqlitebrowser yamllint highlight gawk php-cli tidy jq gitk `#dev-tools` \
     libreadline-dev zlib1g-dev libffi-dev gcc-6 g++-6 libssl1.0-dev `# dev-tools rbenv` \
@@ -325,6 +325,18 @@ pip_bits () {
 
   for i in "${pip_pkgs[@]}"; do
     if ! echo $pip_installed | grep $i; then
+      pip3 install --user $i
+    fi
+  done
+}
+
+# install pip packages
+pip3_bits () {
+  pip3_pkgs=(ansible)
+  pip3_installed=$(pip list --format=legacy | cut -f1 -d" " | xargs printf %s" ")
+
+  for i in "${pip3_pkgs[@]}"; do
+    if ! echo $pip3_installed | grep $i; then
       pip install --user $i
     fi
   done
@@ -519,6 +531,7 @@ install_snaps
 set_editor
 gui_tweaks
 pip_bits
+pip3_bits
 config_sensors
 add_docker_user
 install_atom_plugins
