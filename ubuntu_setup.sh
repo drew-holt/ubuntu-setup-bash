@@ -277,7 +277,7 @@ install_apt () {
 }
 
 install_snaps () {
-  snap_pkgs=(skype slack kubectl)
+  snap_pkgs=(hub kubectl skype slack)
   for i in "${snap_pkgs[@]}"; do
     if ! snap list | grep $i; then
       sudo snap install $i --classic
