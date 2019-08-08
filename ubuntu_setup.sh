@@ -513,6 +513,11 @@ cerebro_install () {
   fi
 }
 
+tfenv_install () {
+  echo "install tfenv for terraform versioning"
+  echo "https://github.com/tfutils/tfenv"
+}
+
 date
 
 START=$(date +%s)
@@ -540,6 +545,7 @@ install_rbenv
 hashicorp_tools
 chefvm_install
 cerebro_install
+tfenv_install
 
 END=$(date +%s)
 DIFF=$(echo "$END - $START" | bc)

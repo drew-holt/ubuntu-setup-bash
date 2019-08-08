@@ -25,3 +25,5 @@ alias sshfs_drew='sshfs 192.168.1.125:/srv /home/drew/drewserv'
 
 export EDITOR=vim
 export MVN_HOME=/usr/local/maven
+
+export PATH="$HOME/.tfenv/bin:$PATH"
