@@ -1,6 +1,6 @@
 #!/bin/bash
 # Drew Holt <drew@invadelabs.com>
-# script to setup newly installed local environment in ubuntu 17.10 or 18.04
+# script to setup newly installed local environment in ubuntu 18.04
 #
 # shellcheck disable=SC1090,SC2086,SC2119,SC2016,SC2120
 # SC1090: Can't follow non-constant source. Use a directive to specify location.
