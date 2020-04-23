@@ -452,9 +452,9 @@ install_rbenv () {
     mkdir -p "$(rbenv root)"/plugins
     git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
 
+    rbenv install 2.5.5
     rbenv install 2.5.1
-    rbenv install 2.3.5
-    rbenv global 2.5.1
+    rbenv global 2.5.5
   fi
 
   # switched to rbenv, for rvm use:
@@ -494,8 +494,8 @@ hashicorp_tools () {
   fi
 
   if [ ! -f /usr/local/bin/terraform ]; then
-    curl -sS -o /tmp/terraform_0.11.7_linux_amd64.zip https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
-    sudo unzip -d /usr/local/bin /tmp/terraform_0.11.7_linux_amd64.zip
+    curl -sS -o /tmp/terraform_0.11.14_linux_amd64.zip https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_linux_amd64.zip
+    sudo unzip -d /usr/local/bin /tmp/terraform_0.11.14_linux_amd64.zip
   fi
 }
 
