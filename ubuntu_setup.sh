@@ -226,6 +226,10 @@ init_etckeeper () {
     # set github here
     git config --global user.name "Drew Holt"
     git config --global user.email "drewderivative@gmail.com"
+    git config --global color.status auto
+    git config --global color.branch auto
+    git config --global color.interactive auto
+    git config --global color.diff auto
 
     sudo etckeeper init
     sudo find /etc/.git -type d -exec chmod 750 {} \;
