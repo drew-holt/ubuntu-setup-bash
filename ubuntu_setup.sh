@@ -510,10 +510,10 @@ chefvm_install () {
 }
 
 cerebro_install () {
-  if [ ! -d $HOME/Desktop/cerebro-0.8.1 ]; then
-    wget -O $HOME/Desktop/cerebro-0.8.1.tgz https://github.com/lmenezes/cerebro/releases/download/v0.8.1/cerebro-0.8.1.tgz
-    tar xvf $HOME/Desktop/cerebro-0.8.1.tgz -C $HOME/Desktop
-    rm $HOME/Desktop/cerebro-0.8.1.tgz
+  if [ ! -d $HOME/Desktop/cerebro-0.9.0 ]; then
+    wget -O $HOME/Desktop/cerebro-0.9.0.tgz https://github.com/lmenezes/cerebro/releases/download/v0.9.0/cerebro-0.9.0.tgz
+    tar xvf $HOME/Desktop/cerebro-0.9.0.tgz -C $HOME/Desktop
+    rm $HOME/Desktop/cerebro-0.9.0.tgz
   fi
 }
 
