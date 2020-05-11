@@ -259,7 +259,7 @@ install_apt () {
     gnome-shell-extension-top-icons-plus gnome-shell-extension-dashtodock `#gui` \
     gnome-shell-extension-system-monitor `#gui` \
     keepass2 kpcli xdotool synergy gnome-tweak-tool chrome-gnome-shell xclip gtk-recordmydesktop `#tools` \
-    acpi vim vim-scripts vim-runtime vim-doc curl xd libguestfs-tools ecryptfs-utils `#systools` \
+    acpi vim vim-scripts vim-runtime vim-doc curl xd libguestfs-tools ecryptfs-utils encfs `#systools` \
     lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl screen `#systools` \
     ubuntu-restricted-extras gimp audacity vlc vlc-plugin-fluidsynth ffmpeg atomicparsley `#media` \
     openjdk-8-jdk icedtea-8-plugin `#openjdk8` \
