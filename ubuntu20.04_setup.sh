@@ -274,8 +274,7 @@ install_apt () {
     lynis pandoc apt-transport-https snapd `#misc` \
     xchat pidgin `#chatapps` \
     ansible `#automation` \
-    google-chrome-stable keybase `#extra repos` \
-    atom insync `# extra repos` \
+    atom google-chrome-stable insync keybase `#extra repos` \
     docker.io
 }
 
@@ -314,7 +313,7 @@ gui_tweaks () {
 
 # install pip packages
 pip3_bits () {
-  pip3_pkgs=(ansible ansible-lint awscli docker-py httpstat pycodestyle pylint youtube-dl)
+  pip3_pkgs=(ansible ansible-lint art awscli docker-py httpstat pycodestyle pylint youtube-dl)
   pip3_installed=$(pip3 list --format=legacy | cut -f1 -d" " | xargs printf %s" ")
 
   for i in "${pip3_pkgs[@]}"; do
@@ -527,6 +526,7 @@ hashicorp_tools
 chefvm_install
 cerebro_install
 tfenv_install
+echo 'Install Java' | python3 -c 'import sys; from art import * ; print(text2art(sys.stdin.read()))'
 
 END=$(date +%s)
 DIFF=$(echo "$END - $START" | bc)
