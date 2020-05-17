@@ -249,8 +249,7 @@ install_apt () {
   wait_apt;
   DEBIAN_FRONTEND=noninteractive `#no prompting` \
     sudo apt-get install -qy \
-    gnome-shell-extension-top-icons-plus gnome-shell-extension-ubuntu-dock `#gui` \
-    gnome-shell-extension-system-monitor `#gui` \
+    gnome-shell-extension-ubuntu-dock gnome-shell-extension-system-monitor `#gui` \
     keepass2 kpcli xdotool synergy gnome-tweak-tool chrome-gnome-shell xclip simplescreenrecorder `#tools` \
     acpi vim vim-scripts vim-runtime vim-doc curl xd libguestfs-tools ecryptfs-utils encfs `#systools` \
     lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl screen `#systools` \
@@ -294,7 +293,7 @@ gui_tweaks () {
   if [ "$(gsettings get org.gnome.shell enabled-extensions)" == "@as []" ]; then
     gnome-shell --replace &
 
-    gsettings set org.gnome.shell enabled-extensions "['dash-to-dock@micxgx.gmail.com', 'TopIcons@phocean.net', 'system-monitor@paradoxxx.zero.gmail.com']"
+    gsettings set org.gnome.shell enabled-extensions "['dash-to-dock@micxgx.gmail.com', 'system-monitor@paradoxxx.zero.gmail.com']"
 
     # dash to dock
     gsettings set org.gnome.shell.extensions.dash-to-dock preferred-monitor 0
@@ -303,26 +302,17 @@ gui_tweaks () {
     gsettings set org.gnome.shell.extensions.dash-to-dock dock-position 'BOTTOM'
     gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed false
 
-    # topicons
-    gsettings set org.gnome.shell.extensions.topicons icon-size 24
-    gsettings set org.gnome.shell.extensions.topicons tray-pos 'right'
-    gsettings set org.gnome.shell.extensions.topicons icon-brightness 0.0
-    gsettings set org.gnome.shell.extensions.topicons icon-saturation 0.40000000000000002
-    gsettings set org.gnome.shell.extensions.topicons icon-contrast 0.0
-    gsettings set org.gnome.shell.extensions.topicons icon-opacity 220
-    gsettings set org.gnome.shell.extensions.topicons tray-order 1
-    gsettings set org.gnome.shell.extensions.topicons icon-spacing 12
   fi
 }
 
 # install pip packages
 pip3_bits () {
   pip3_pkgs=(ansible ansible-lint awscli docker-py httpstat pycodestyle pylint youtube-dl)
-  pip3_installed=$(pip list --format=legacy | cut -f1 -d" " | xargs printf %s" ")
+  pip3_installed=$(pip3 list --format=legacy | cut -f1 -d" " | xargs printf %s" ")
 
   for i in "${pip3_pkgs[@]}"; do
     if ! echo $pip3_installed | grep $i; then
-      pip install --user $i
+      pip3 install --user $i
     fi
   done
 }
@@ -520,7 +510,6 @@ install_apt
 install_snaps
 set_editor
 gui_tweaks
-pip_bits
 pip3_bits
 config_sensors
 add_docker_user
