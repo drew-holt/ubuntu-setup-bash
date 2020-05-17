@@ -251,6 +251,7 @@ install_apt () {
   echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
   echo postfix postfix/mailname string "$HOSTNAME".local | sudo debconf-set-selections
   echo postfix postfix/main_mailer_type string 'Local only' | sudo debconf-set-selections
+  echo encfs encfs/security-information seen | sudo debconf-set-selections
 
   # install all the things
   wait_apt;
@@ -260,6 +261,7 @@ install_apt () {
     keepass2 kpcli xdotool gnome-tweak-tool chrome-gnome-shell xclip simplescreenrecorder `#tools` \
     acpi vim vim-scripts vim-runtime vim-doc curl xd libguestfs-tools ecryptfs-utils encfs `#systools` \
     lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl screen `#systools` \
+    debconf-utils `#systools` \
     ubuntu-restricted-extras gimp audacity vlc vlc-plugin-fluidsynth ffmpeg atomicparsley `#media` \
     openjdk-8-jdk `#openjdk8` \
     openssh-server fail2ban `#daemon` \
