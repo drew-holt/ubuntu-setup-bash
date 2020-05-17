@@ -185,7 +185,7 @@ extra_repos () {
   fi
 
   if [ ! -f "$APT_DIR"/insync.list ]; then
-    wget -O - https://d2t3ff60b2tol4.cloudfront.net/services@insynchq.com.gpg.key | sudo apt-key add -
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ACCAF35C
     echo "deb http://apt.insynchq.com/ubuntu $(lsb_release -cs) non-free" | sudo tee "$APT_DIR"/insync.list
   fi
 }
@@ -250,11 +250,11 @@ install_apt () {
   DEBIAN_FRONTEND=noninteractive `#no prompting` \
     sudo apt-get install -qy \
     gnome-shell-extension-ubuntu-dock gnome-shell-extension-system-monitor `#gui` \
-    keepass2 kpcli xdotool synergy gnome-tweak-tool chrome-gnome-shell xclip simplescreenrecorder `#tools` \
+    keepass2 kpcli xdotool gnome-tweak-tool chrome-gnome-shell xclip simplescreenrecorder `#tools` \
     acpi vim vim-scripts vim-runtime vim-doc curl xd libguestfs-tools ecryptfs-utils encfs `#systools` \
     lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl screen `#systools` \
     ubuntu-restricted-extras gimp audacity vlc vlc-plugin-fluidsynth ffmpeg atomicparsley `#media` \
-    openjdk-8-jdk icedtea-8-plugin `#openjdk8` \
+    openjdk-8-jdk `#openjdk8` \
     openssh-server fail2ban `#daemon` \
     openvpn network-manager-openconnect-gnome network-manager-openvpn-gnome `#network-client` \
     rdesktop freerdp2-x11 xtightvncviewer sshpass qbittorrent wireshark `#netutil` \
@@ -267,7 +267,7 @@ install_apt () {
     lynis pandoc apt-transport-https snapd `#misc` \
     xchat pidgin `#chatapps` \
     ansible `#automation` \
-    oracle-java8-installer google-chrome-stable keybase `#extra repos` \
+    google-chrome-stable keybase `#extra repos` \
     atom insync `# extra repos` \
     docker.io
 }
