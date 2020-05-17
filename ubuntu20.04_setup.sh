@@ -80,12 +80,19 @@ gsettings_personalizations () {
                                                   'wireshark.desktop', \
                                                   'virtualbox.desktop']"
 
-    # set gnome-terminal colors
+    # set gnome-terminal settings
+    gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
+
     # e.x.: gsettings list-recursively "org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/"
     # e.x.: gsettings set "org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/" login-shell true
-    settings=("use-theme-colors false" "login-shell true" "default-show-menubar false" "foreground-color \
-        'rgb(255,255,255)'" "background-transparency-percent 6" "background-color 'rgb(0,0,0)'" \
-      "use-theme-transparency false" "scrollback-unlimited true" "use-transparent-background true")
+    settings=("use-theme-colors false" \
+	      "login-shell true" \
+	      "foreground-color 'rgb(255,255,255)'" \
+	      "background-transparency-percent 6" \
+	      "background-color 'rgb(0,0,0)'" \
+              "use-theme-transparency false" \
+	      "scrollback-unlimited true" \
+	      "use-transparent-background true")
     profile=$(gsettings get org.gnome.Terminal.ProfilesList default)
     profile=${profile:1:-1} # remove leading and trailing single quotes
     for i in "${settings[@]}"; do
@@ -121,7 +128,7 @@ gsettings_personalizations () {
     fi
   done
 
-  folders_mk=(/mnt/hdd /mnt/share $HOME/drewserv)
+  folders_mk=(/mnt/hdd /mnt/share "$HOME"/drewserv)
   for i in "${folders_mk[@]}"; do
     if [ ! -d $i ]; then
       sudo mkdir $i
@@ -162,12 +169,6 @@ sysctl_cus () {
 extra_repos () {
   APT_DIR="/etc/apt/sources.list.d"
 
-  if [ ! -f "$APT_DIR"/webupd8team-ubuntu-java-"$(lsb_release -cs)".list ]; then
-    sudo add-apt-repository -y ppa:webupd8team/java
-    echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
-    echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-  fi
-
   if [ ! -f "$APT_DIR"/google-chrome.list ]; then
     wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
     echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee "$APT_DIR"/google-chrome.list
@@ -187,14 +188,6 @@ extra_repos () {
     wget -O - https://d2t3ff60b2tol4.cloudfront.net/services@insynchq.com.gpg.key | sudo apt-key add -
     echo "deb http://apt.insynchq.com/ubuntu $(lsb_release -cs) non-free" | sudo tee "$APT_DIR"/insync.list
   fi
-
-  # docker use repos in artful, bionic use snaps
-  # if [ "$(lsb_release -cs)" == "artful" ]; then
-  #   if ! grep docker /etc/apt/sources.list; then
-  #     wget -O - https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  #     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-  #   fi
-  # fi
 }
 
 # wait for apt lock release
@@ -256,9 +249,8 @@ install_apt () {
   wait_apt;
   DEBIAN_FRONTEND=noninteractive `#no prompting` \
     sudo apt-get install -qy \
-    gnome-shell-extension-top-icons-plus gnome-shell-extension-dashtodock `#gui` \
-    gnome-shell-extension-system-monitor `#gui` \
-    keepass2 kpcli xdotool synergy gnome-tweak-tool chrome-gnome-shell xclip gtk-recordmydesktop `#tools` \
+    gnome-shell-extension-ubuntu-dock gnome-shell-extension-system-monitor `#gui` \
+    keepass2 kpcli xdotool synergy gnome-tweak-tool chrome-gnome-shell xclip simplescreenrecorder `#tools` \
     acpi vim vim-scripts vim-runtime vim-doc curl xd libguestfs-tools ecryptfs-utils encfs `#systools` \
     lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl screen `#systools` \
     ubuntu-restricted-extras gimp audacity vlc vlc-plugin-fluidsynth ffmpeg atomicparsley `#media` \
@@ -266,12 +258,12 @@ install_apt () {
     openssh-server fail2ban `#daemon` \
     openvpn network-manager-openconnect-gnome network-manager-openvpn-gnome `#network-client` \
     rdesktop freerdp2-x11 xtightvncviewer sshpass qbittorrent wireshark `#netutil` \
-    nmap nikto chkrootkit wavemon namebench apache2-utils mailutils `#netutils` \
+    nmap nikto chkrootkit wavemon apache2-utils mailutils `#netutils` \
     iftop iptraf sshfs cifs-utils ethtool `#netutils` \
-    virtualenv python2.7-examples python-pip python3-pip `#python` \
+    virtualenv python3-pip `#python` \
     build-essential `#build-tools` \
     shellcheck sqlitebrowser yamllint highlight gawk php-cli tidy jq gitk `#dev-tools` \
-    libreadline-dev zlib1g-dev libffi-dev gcc-6 g++-6 libssl1.0-dev `# dev-tools rbenv` \
+    libreadline-dev zlib1g-dev libffi-dev libssl-dev `# dev-tools rbenv` \
     lynis pandoc apt-transport-https snapd `#misc` \
     xchat pidgin `#chatapps` \
     ansible `#automation` \
@@ -301,47 +293,26 @@ gui_tweaks () {
   if [ "$(gsettings get org.gnome.shell enabled-extensions)" == "@as []" ]; then
     gnome-shell --replace &
 
-    gsettings set org.gnome.shell enabled-extensions "['dash-to-dock@micxgx.gmail.com', 'TopIcons@phocean.net', 'system-monitor@paradoxxx.zero.gmail.com']"
+    gsettings set org.gnome.shell enabled-extensions "['dash-to-dock@micxgx.gmail.com', 'system-monitor@paradoxxx.zero.gmail.com']"
 
     # dash to dock
     gsettings set org.gnome.shell.extensions.dash-to-dock preferred-monitor 0
     gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
-    gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 32
+    gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 64
     gsettings set org.gnome.shell.extensions.dash-to-dock dock-position 'BOTTOM'
     gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed false
 
-    # topicons
-    gsettings set org.gnome.shell.extensions.topicons icon-size 24
-    gsettings set org.gnome.shell.extensions.topicons tray-pos 'right'
-    gsettings set org.gnome.shell.extensions.topicons icon-brightness 0.0
-    gsettings set org.gnome.shell.extensions.topicons icon-saturation 0.40000000000000002
-    gsettings set org.gnome.shell.extensions.topicons icon-contrast 0.0
-    gsettings set org.gnome.shell.extensions.topicons icon-opacity 220
-    gsettings set org.gnome.shell.extensions.topicons tray-order 1
-    gsettings set org.gnome.shell.extensions.topicons icon-spacing 12
   fi
 }
 
 # install pip packages
-pip_bits () {
-  pip_pkgs=(youtube-dl awscli pylint pycodestyle ansible-lint docker-py httpstat)
-  pip_installed=$(pip list --format=legacy | cut -f1 -d" " | xargs printf %s" ")
-
-  for i in "${pip_pkgs[@]}"; do
-    if ! echo $pip_installed | grep $i; then
-      pip3 install --user $i
-    fi
-  done
-}
-
-# install pip packages
 pip3_bits () {
-  pip3_pkgs=(ansible)
-  pip3_installed=$(pip list --format=legacy | cut -f1 -d" " | xargs printf %s" ")
+  pip3_pkgs=(ansible ansible-lint awscli docker-py httpstat pycodestyle pylint youtube-dl)
+  pip3_installed=$(pip3 list --format=legacy | cut -f1 -d" " | xargs printf %s" ")
 
   for i in "${pip3_pkgs[@]}"; do
     if ! echo $pip3_installed | grep $i; then
-      pip install --user $i
+      pip3 install --user $i
     fi
   done
 }
@@ -367,7 +338,7 @@ add_docker_user () {
 
 # atom plugins
 install_atom_plugins () {
-  if [ -f "$(which atom)" ]; then
+  if [ -f "$(command -v atom)" ]; then
     apm_pkgs=( \
     atom-beautify \
     autocomplete-python \
@@ -539,7 +510,6 @@ install_apt
 install_snaps
 set_editor
 gui_tweaks
-pip_bits
 pip3_bits
 config_sensors
 add_docker_user
