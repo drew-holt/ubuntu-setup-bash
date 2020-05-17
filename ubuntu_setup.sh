@@ -121,7 +121,7 @@ gsettings_personalizations () {
     fi
   done
 
-  folders_mk=(/mnt/hdd /mnt/share $HOME/drewserv)
+  folders_mk=(/mnt/hdd /mnt/share "$HOME"/drewserv)
   for i in "${folders_mk[@]}"; do
     if [ ! -d $i ]; then
       sudo mkdir $i
@@ -367,7 +367,7 @@ add_docker_user () {
 
 # atom plugins
 install_atom_plugins () {
-  if [ -f "$(which atom)" ]; then
+  if [ -f "$(command -v atom)" ]; then
     apm_pkgs=( \
     atom-beautify \
     autocomplete-python \
