@@ -249,9 +249,9 @@ install_apt () {
   wait_apt;
   DEBIAN_FRONTEND=noninteractive `#no prompting` \
     sudo apt-get install -qy \
-    gnome-shell-extension-top-icons-plus gnome-shell-extension-dashtodock `#gui` \
+    gnome-shell-extension-top-icons-plus gnome-shell-extension-ubuntu-dock `#gui` \
     gnome-shell-extension-system-monitor `#gui` \
-    keepass2 kpcli xdotool synergy gnome-tweak-tool chrome-gnome-shell xclip gtk-recordmydesktop `#tools` \
+    keepass2 kpcli xdotool synergy gnome-tweak-tool chrome-gnome-shell xclip simplescreenrecorder `#tools` \
     acpi vim vim-scripts vim-runtime vim-doc curl xd libguestfs-tools ecryptfs-utils encfs `#systools` \
     lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl screen `#systools` \
     ubuntu-restricted-extras gimp audacity vlc vlc-plugin-fluidsynth ffmpeg atomicparsley `#media` \
@@ -259,12 +259,12 @@ install_apt () {
     openssh-server fail2ban `#daemon` \
     openvpn network-manager-openconnect-gnome network-manager-openvpn-gnome `#network-client` \
     rdesktop freerdp2-x11 xtightvncviewer sshpass qbittorrent wireshark `#netutil` \
-    nmap nikto chkrootkit wavemon namebench apache2-utils mailutils `#netutils` \
+    nmap nikto chkrootkit wavemon apache2-utils mailutils `#netutils` \
     iftop iptraf sshfs cifs-utils ethtool `#netutils` \
-    virtualenv python2.7-examples python-pip python3-pip `#python` \
+    virtualenv python3-pip `#python` \
     build-essential `#build-tools` \
     shellcheck sqlitebrowser yamllint highlight gawk php-cli tidy jq gitk `#dev-tools` \
-    libreadline-dev zlib1g-dev libffi-dev gcc-6 g++-6 libssl1.0-dev `# dev-tools rbenv` \
+    libreadline-dev zlib1g-dev libffi-dev `# dev-tools rbenv` \
     lynis pandoc apt-transport-https snapd `#misc` \
     xchat pidgin `#chatapps` \
     ansible `#automation` \
