@@ -53,7 +53,7 @@ gsettings_personalizations () {
     gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
 
     # set timeout 'Blank screen' to 15min
-    gsettings set org.gnome.desktop.session idle-delay uint32 900
+    # gsettings set org.gnome.desktop.session idle-delay uint32 900
 
     # switch alt+tab to windows, not applications. GUI under 'Settings > Keyboard'
     gsettings set org.gnome.desktop.wm.keybindings switch-applications "[]"
@@ -181,7 +181,7 @@ extra_repos () {
 
   if [ ! -f "$APT_DIR"/insync.list ]; then
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv ACCAF35C
-    echo "deb http://apt.insynchq.com/ubuntu $(lsb_release -cs) non-free" | sudo tee "$APT_DIR"/insync.list
+    echo "deb http://apt.insync.io/ubuntu $(lsb_release -cs) non-free contrib" | sudo tee "$APT_DIR"/insync.list
   fi
 
   if [ ! -f "$APT_DIR"/keybase.list ]; then
@@ -192,7 +192,7 @@ extra_repos () {
   if ! dpkg --no-pager -l synergy; then
     wget -O /tmp/synergy_1.11.1.stable~b58%2B55ec3105_ubuntu19_amd64.deb \
     https://binaries.symless.com/synergy/v1-core-standard/v1.11.1-stable-55ec3105/synergy_1.11.1.stable~b58%2B55ec3105_ubuntu19_amd64.deb && \
-    sudo apt install /tmp/synergy_1.11.1.stable~b58%2B55ec3105_ubuntu19_amd64.deb && \
+    sudo apt install -y /tmp/synergy_1.11.1.stable~b58%2B55ec3105_ubuntu19_amd64.deb && \
     rm /tmp/synergy_1.11.1.stable~b58%2B55ec3105_ubuntu19_amd64.deb
   fi
 }
