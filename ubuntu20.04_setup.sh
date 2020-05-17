@@ -80,12 +80,19 @@ gsettings_personalizations () {
                                                   'wireshark.desktop', \
                                                   'virtualbox.desktop']"
 
-    # set gnome-terminal colors
+    # set gnome-terminal settings
+    gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
+
     # e.x.: gsettings list-recursively "org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/"
     # e.x.: gsettings set "org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/" login-shell true
-    settings=("use-theme-colors false" "login-shell true" "default-show-menubar false" "foreground-color \
-        'rgb(255,255,255)'" "background-transparency-percent 6" "background-color 'rgb(0,0,0)'" \
-      "use-theme-transparency false" "scrollback-unlimited true" "use-transparent-background true")
+    settings=("use-theme-colors false" \
+	      "login-shell true" \
+	      "foreground-color 'rgb(255,255,255)'" \
+	      "background-transparency-percent 6" \
+	      "background-color 'rgb(0,0,0)'" \
+              "use-theme-transparency false" \
+	      "scrollback-unlimited true" \
+	      "use-transparent-background true")
     profile=$(gsettings get org.gnome.Terminal.ProfilesList default)
     profile=${profile:1:-1} # remove leading and trailing single quotes
     for i in "${settings[@]}"; do
