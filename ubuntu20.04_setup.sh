@@ -264,7 +264,7 @@ install_apt () {
     virtualenv python3-pip `#python` \
     build-essential `#build-tools` \
     shellcheck sqlitebrowser yamllint highlight gawk php-cli tidy jq gitk `#dev-tools` \
-    libreadline-dev zlib1g-dev libffi-dev `# dev-tools rbenv` \
+    libreadline-dev zlib1g-dev libffi-dev libssl-dev `# dev-tools rbenv` \
     lynis pandoc apt-transport-https snapd `#misc` \
     xchat pidgin `#chatapps` \
     ansible `#automation` \
