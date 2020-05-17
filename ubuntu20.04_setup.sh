@@ -299,7 +299,7 @@ gui_tweaks () {
     # dash to dock
     gsettings set org.gnome.shell.extensions.dash-to-dock preferred-monitor 0
     gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
-    gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 32
+    gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 64
     gsettings set org.gnome.shell.extensions.dash-to-dock dock-position 'BOTTOM'
     gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed false
 
@@ -316,20 +316,8 @@ gui_tweaks () {
 }
 
 # install pip packages
-pip_bits () {
-  pip_pkgs=(youtube-dl awscli pylint pycodestyle ansible-lint docker-py httpstat)
-  pip_installed=$(pip list --format=legacy | cut -f1 -d" " | xargs printf %s" ")
-
-  for i in "${pip_pkgs[@]}"; do
-    if ! echo $pip_installed | grep $i; then
-      pip3 install --user $i
-    fi
-  done
-}
-
-# install pip packages
 pip3_bits () {
-  pip3_pkgs=(ansible)
+  pip3_pkgs=(ansible ansible-lint awscli docker-py httpstat pycodestyle pylint youtube-dl)
   pip3_installed=$(pip list --format=legacy | cut -f1 -d" " | xargs printf %s" ")
 
   for i in "${pip3_pkgs[@]}"; do
