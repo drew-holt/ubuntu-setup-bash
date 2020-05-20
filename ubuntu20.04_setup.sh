@@ -257,6 +257,7 @@ install_apt () {
   DEBIAN_FRONTEND=noninteractive `#no prompting` \
     sudo apt-get install -qy \
     gnome-shell-extension-ubuntu-dock gnome-shell-extension-system-monitor `#gui` \
+    gnome-shell-extension-desktop-icons \ `#gui` \
     keepass2 kpcli xdotool gnome-tweak-tool chrome-gnome-shell xclip simplescreenrecorder `#tools` \
     acpi vim vim-scripts vim-runtime vim-doc curl xd libguestfs-tools ecryptfs-utils `#systools` \
     lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl screen `#systools` \
@@ -404,7 +405,7 @@ install_nvm () {
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-    nvm install 9
+    nvm install v11.15.0
   fi
 
   source $HOME/.bashrc && echo $PATH
@@ -498,6 +499,7 @@ cerebro_install () {
 tfenv_install () {
   echo "install tfenv for terraform versioning"
   echo "https://github.com/tfutils/tfenv"
+  echo "0.11.14 0.12.6 0.12.13 0.12.20"
 }
 
 date
@@ -528,6 +530,7 @@ chefvm_install
 cerebro_install
 tfenv_install
 echo 'Install Java' | python3 -c 'import sys; from art import * ; print(text2art(sys.stdin.read()))'
+echo 'Install tfenv' | python3 -c 'import sys; from art import * ; print(text2art(sys.stdin.read()))'
 
 END=$(date +%s)
 DIFF=$(echo "$END - $START" | bc)
