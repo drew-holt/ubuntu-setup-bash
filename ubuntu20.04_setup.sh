@@ -73,7 +73,7 @@ gsettings_personalizations () {
                                                   'atom.desktop', \
                                                   'skype_skypeforlinux.desktop', \
                                                   'org.gnome.baobab.desktop', \
-                                                  'keepass2.desktop', \
+                                                  'org.keepassxc.KeePassXC.desktop', \
                                                   'slack.desktop', \
                                                   'vlc.desktop', \
                                                   'xchat.desktop', \
@@ -258,10 +258,10 @@ install_apt () {
     sudo apt-get install -qy \
     gnome-shell-extension-ubuntu-dock gnome-shell-extension-system-monitor `#gui` \
     gnome-shell-extension-desktop-icons \ `#gui` \
-    keepass2 kpcli xdotool gnome-tweak-tool chrome-gnome-shell xclip simplescreenrecorder `#tools` \
+    keepassxc xdotool gnome-tweak-tool chrome-gnome-shell xclip simplescreenrecorder `#tools` \
     acpi vim vim-scripts vim-runtime vim-doc curl xd libguestfs-tools ecryptfs-utils `#systools` \
     lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl screen `#systools` \
-    debconf-utils `#systools` \
+    debconf-utils needrestart `#systools` \
     ubuntu-restricted-extras gimp audacity vlc vlc-plugin-fluidsynth ffmpeg atomicparsley `#media` \
     openjdk-8-jdk `#openjdk8` \
     openssh-server fail2ban `#daemon` \
