@@ -13,7 +13,7 @@ alias get_ip='_get_ip() { VBoxManage guestproperty get "$1" "/VirtualBox/GuestIn
 alias ans-cron='ansible-playbook -i hosts site.yml --diff --start-at-task="cron; git clone --depth 1 invadelabs.com/cron-invadelabs"'
 alias git-reset='git fetch origin; git reset --hard origin/master'
 alias git-check='git branch; git status; git diff'
-alias git-pers="git config --global user.email 'drew@invadelabs.com'; export GPGKEY=CA521CE38DD9D8E586AD18607A27C99359698874"
+alias git-pers="git config --global user.email 'drewderivative@gmail.com'; export GPGKEY=CA521CE38DD9D8E586AD18607A27C99359698874"
 alias mnt-d='sudo mount -t cifs -o username=drew,uid=1000,gid=1000 //192.168.1.125/share /mnt/share'
 alias hub-pr="hub pull-request -o --no-edit"
 alias tfi='rm -rf .terraform/modules/* && terraform init'
@@ -26,4 +26,21 @@ alias sshfs_drew='sshfs 192.168.1.125:/srv $HOME/drewserv'
 export EDITOR=vim
 export MVN_HOME=/usr/local/maven
 
-export PATH="$HOME/.tfenv/bin:$HOME/.nvm/versions/node/v9.11.2/bin:$PATH"
+# $HOME/.nvm/versions/node/$(nvm current)/bin
+export PATH="$HOME/.nvm/versions/node/v11.15.0/bin:$PATH"
+
+function set_aws {
+  eval $(awsenv shell $1)
+}
+function login_aws {
+  open $(awsenv console $1)
+}
+
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+eval "$($HOME/.chefvm/bin/chefvm init -)"
+
+export PATH="$HOME/.tfenv/bin:$PATH"
+
+complete -C '$HOME/.local/bin/aws_completer' aws

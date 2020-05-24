@@ -68,13 +68,13 @@ gsettings_personalizations () {
                                                   'org.gnome.Terminal.desktop', \
                                                   'libreoffice-startcenter.desktop', \
                                                   'sqlitebrowser.desktop', \
-                                                  'qbittorrent.desktop', \
+                                                  'org.qbittorrent.qBittorrent.desktop', \
                                                   'audacity.desktop', \
                                                   'atom.desktop', \
                                                   'skype_skypeforlinux.desktop', \
+                                                  'slack_slack.desktop', \
                                                   'org.gnome.baobab.desktop', \
                                                   'org.keepassxc.KeePassXC.desktop', \
-                                                  'slack.desktop', \
                                                   'vlc.desktop', \
                                                   'xchat.desktop', \
                                                   'wireshark.desktop', \
@@ -86,13 +86,13 @@ gsettings_personalizations () {
     # e.x.: gsettings list-recursively "org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/"
     # e.x.: gsettings set "org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/" login-shell true
     settings=("use-theme-colors false" \
-	      "login-shell true" \
-	      "foreground-color 'rgb(255,255,255)'" \
-	      "background-transparency-percent 6" \
-	      "background-color 'rgb(0,0,0)'" \
+              "login-shell true" \
+              "foreground-color 'rgb(255,255,255)'" \
+              "background-transparency-percent 6" \
+              "background-color 'rgb(0,0,0)'" \
               "use-theme-transparency false" \
-	      "scrollback-unlimited true" \
-	      "use-transparent-background true")
+              "scrollback-unlimited true" \
+              "use-transparent-background true")
     profile=$(gsettings get org.gnome.Terminal.ProfilesList default)
     profile=${profile:1:-1} # remove leading and trailing single quotes
     for i in "${settings[@]}"; do
@@ -169,10 +169,10 @@ sysctl_cus () {
 extra_repos () {
   APT_DIR="/etc/apt/sources.list.d"
 
-    if [ ! -f "$APT_DIR"/atom.list ]; then
-      wget -O - https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
-      echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" | sudo tee "$APT_DIR"/atom.list
-    fi
+  if [ ! -f "$APT_DIR"/atom.list ]; then
+    wget -O - https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
+    echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" | sudo tee "$APT_DIR"/atom.list
+  fi
 
   if [ ! -f "$APT_DIR"/google-chrome.list ]; then
     wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
@@ -260,7 +260,7 @@ install_apt () {
     gnome-shell-extension-desktop-icons `#gui` \
     keepassxc xdotool gnome-tweak-tool chrome-gnome-shell xclip simplescreenrecorder `#tools` \
     acpi vim vim-scripts vim-runtime vim-doc curl xd libguestfs-tools ecryptfs-utils `#systools` \
-    lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl screen `#systools` \
+    lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl screen baobab `#systools` \
     debconf-utils needrestart `#systools` \
     ubuntu-restricted-extras gimp audacity vlc vlc-plugin-fluidsynth ffmpeg atomicparsley `#media` \
     openjdk-8-jdk `#openjdk8` \
@@ -315,7 +315,15 @@ gui_tweaks () {
 
 # install pip packages
 pip3_bits () {
-  pip3_pkgs=(ansible ansible-lint art awscli docker-py httpstat pycodestyle pylint youtube-dl)
+  pip3_pkgs=(ansible \
+             ansible-lint \
+             art \
+             awscli \
+             docker-py \
+             httpstat \
+             pycodestyle \
+             pylint \
+             youtube-dl)
   pip3_installed=$(pip3 list --format=legacy | cut -f1 -d" " | xargs printf %s" ")
 
   for i in "${pip3_pkgs[@]}"; do
@@ -347,46 +355,44 @@ add_docker_user () {
 # atom plugins
 install_atom_plugins () {
   if [ -f "$(command -v atom)" ]; then
-    apm_pkgs=( \
-    atom-beautify \
-    autocomplete-python \
-    busy-signal \
-    django-templates \
-    emmet \
-    git-plus \
-    file-icons \
-    intentions \
-    language-ansible \
-    language-chef \
-    language-docker \
-    language-hcl \
-    language-groovy \
-    linter \
-    linter-ansible-linting \
-    linter-ansible-syntax \
-    linter-cookstyle \
-    linter-docker \
-    linter-htmllint \
-    linter-js-yaml \
-    linter-jsonlint \
-    linter-markdown \
-    linter-php \
-    linter-pycodestyle \
-    linter-pylint \
-    linter-rubocop \
-    linter-ruby \
-    linter-travis-lint \
-    linter-terraform-syntax \
-    language-terraform \
-    linter-ui-default \
-    linter-vagrant-validate \
-    linter-tidy \
-    minimap \
-    remove-whitespace \
-    script \
-    script-runner \
-    teletype \
-    )
+    apm_pkgs=(atom-beautify \
+              autocomplete-python \
+              busy-signal \
+              django-templates \
+              emmet \
+              git-plus \
+              file-icons \
+              intentions \
+              language-ansible \
+              language-chef \
+              language-docker \
+              language-hcl \
+              language-groovy \
+              linter \
+              linter-ansible-linting \
+              linter-ansible-syntax \
+              linter-cookstyle \
+              linter-docker \
+              linter-htmllint \
+              linter-js-yaml \
+              linter-jsonlint \
+              linter-markdown \
+              linter-php \
+              linter-pycodestyle \
+              linter-pylint \
+              linter-rubocop \
+              linter-ruby \
+              linter-travis-lint \
+              linter-terraform-syntax \
+              language-terraform \
+              linter-ui-default \
+              linter-vagrant-validate \
+              linter-tidy \
+              minimap \
+              remove-whitespace \
+              script \
+              script-runner \
+              teletype)
 
     for i in "${apm_pkgs[@]}"; do
       if [ ! -d $HOME/.atom/packages/$i ]; then
