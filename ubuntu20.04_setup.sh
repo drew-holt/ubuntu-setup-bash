@@ -257,7 +257,7 @@ install_apt () {
   DEBIAN_FRONTEND=noninteractive `#no prompting` \
     sudo apt-get install -qy \
     gnome-shell-extension-ubuntu-dock gnome-shell-extension-system-monitor `#gui` \
-    gnome-shell-extension-desktop-icons \ `#gui` \
+    gnome-shell-extension-desktop-icons `#gui` \
     keepassxc xdotool gnome-tweak-tool chrome-gnome-shell xclip simplescreenrecorder `#tools` \
     acpi vim vim-scripts vim-runtime vim-doc curl xd libguestfs-tools ecryptfs-utils `#systools` \
     lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl screen `#systools` \
