@@ -299,8 +299,6 @@ set_editor () {
 # configure dash to dock XXX check these everytime
 gui_tweaks () {
   if [ "$(gsettings get org.gnome.shell enabled-extensions)" == "@as []" ]; then
-    gnome-shell --replace &
-
     gsettings set org.gnome.shell enabled-extensions "['dash-to-dock@micxgx.gmail.com', 'system-monitor@paradoxxx.zero.gmail.com']"
 
     # dash to dock
