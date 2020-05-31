@@ -150,12 +150,13 @@ fi
 EOF
   fi
 
-  if ! grep .bash_aliases "$HOME"/.bashrc; then
-    echo "No refrence to .bash_aliases in .bashrc - bailing"
-    exit 1
+  if [ ! -f "$HOME"/.bashrc ]; then
+    wget -O $HOME/.bash_aliases https://raw.githubusercontent.com/drew-holt/ubuntu-setup-bash/master/bash_aliases
   fi
 
-  wget -O $HOME/.bash_aliases https://raw.githubusercontent.com/drew-holt/ubuntu-setup-bash/master/.bash_aliases
+  if [ ! -f "$HOME"/.bash_profile ]; then
+    wget -O $HOME/.bash_profile https://raw.githubusercontent.com/drew-holt/ubuntu-setup-bash/master/bash_profile
+  fi
 }
 
 sysctl_cus () {
