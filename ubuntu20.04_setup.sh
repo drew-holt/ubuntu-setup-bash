@@ -166,7 +166,7 @@ sysctl_cus () {
   fi
 }
 
-# oracle 8, google chrome, keybase, skype, slack, atom, insync, docker
+# atom, google chrome, insync, keybase, synergy
 extra_repos () {
   APT_DIR="/etc/apt/sources.list.d"
 
@@ -191,10 +191,10 @@ extra_repos () {
   fi
 
   if ! dpkg --no-pager -l synergy; then
-    wget -O /tmp/synergy_1.11.1.stable~b58%2B55ec3105_ubuntu19_amd64.deb \
-    https://binaries.symless.com/synergy/v1-core-standard/v1.11.1-stable-55ec3105/synergy_1.11.1.stable~b58%2B55ec3105_ubuntu19_amd64.deb && \
-    sudo apt install -y /tmp/synergy_1.11.1.stable~b58%2B55ec3105_ubuntu19_amd64.deb && \
-    rm /tmp/synergy_1.11.1.stable~b58%2B55ec3105_ubuntu19_amd64.deb
+    wget -O /tmp/synergy-1.12.0.deb \
+    https://binaries.symless.com/synergy/v1-core-standard/v1.12.0-stable-cb8064e8/synergy_1.12.0.stable~b20200827.1%2Bcb8064e8_ubuntu20_amd64.deb && \
+    sudo apt install -y /tmp/synergy-1.12.0.deb && \
+    rm /tmp/synergy-1.12.0.deb
   fi
 }
 
@@ -268,7 +268,7 @@ install_apt () {
     openssh-server fail2ban `#daemon` \
     openvpn network-manager-openconnect-gnome network-manager-openvpn-gnome `#network-client` \
     rdesktop freerdp2-x11 xtightvncviewer sshpass qbittorrent wireshark `#netutil` \
-    nmap nikto chkrootkit wavemon apache2-utils mailutils `#netutils` \
+    nmap nikto chkrootkit wavemon apache2-utils mailutils nethogs `#netutils` \
     iftop iptraf sshfs cifs-utils ethtool `#netutils` \
     virtualenv python3-pip `#python` \
     build-essential `#build-tools` \
@@ -441,7 +441,7 @@ install_rbenv () {
     git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
 
     rbenv install 2.5.5
-    rbenv install 2.5.1
+    #rbenv install 2.5.1
     rbenv global 2.5.5
   fi
 
@@ -480,11 +480,6 @@ hashicorp_tools () {
     curl -sS -o /tmp/packer_1.2.4_linux_amd64.zip https://releases.hashicorp.com/packer/1.2.4/packer_1.2.4_linux_amd64.zip
     sudo unzip -d /usr/local/bin /tmp/packer_1.2.4_linux_amd64.zip
   fi
-
-  if [ ! -f /usr/local/bin/terraform ]; then
-    curl -sS -o /tmp/terraform_0.11.14_linux_amd64.zip https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_linux_amd64.zip
-    sudo unzip -d /usr/local/bin /tmp/terraform_0.11.14_linux_amd64.zip
-  fi
 }
 
 chefvm_install () {
@@ -494,17 +489,11 @@ chefvm_install () {
 }
 
 cerebro_install () {
-  if [ ! -d $HOME/Desktop/cerebro-0.9.0 ]; then
-    wget -O $HOME/Desktop/cerebro-0.9.0.tgz https://github.com/lmenezes/cerebro/releases/download/v0.9.0/cerebro-0.9.0.tgz
-    tar xvf $HOME/Desktop/cerebro-0.9.0.tgz -C $HOME/Desktop
-    rm $HOME/Desktop/cerebro-0.9.0.tgz
+  if [ ! -d $HOME/Desktop/cerebro-0.9.2 ]; then
+    wget -O $HOME/Desktop/cerebro-0.9.2.tgz https://github.com/lmenezes/cerebro/releases/download/v0.9.2/cerebro-0.9.2.tgz
+    tar xvf $HOME/Desktop/cerebro-0.9.2.tgz -C $HOME/Desktop
+    rm $HOME/Desktop/cerebro-0.9.2.tgz
   fi
-}
-
-tfenv_install () {
-  echo "install tfenv for terraform versioning"
-  echo "https://github.com/tfutils/tfenv"
-  echo "0.11.14 0.12.6 0.12.13 0.12.20"
 }
 
 date
