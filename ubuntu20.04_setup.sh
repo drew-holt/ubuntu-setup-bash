@@ -1,6 +1,6 @@
 #!/bin/bash
 # Drew Holt <drew@invadelabs.com>
-# script to setup newly installed local environment in ubuntu 18.04
+# script to setup newly installed local environment in ubuntu 20.04
 #
 # shellcheck disable=SC1090,SC2086,SC2119,SC2016,SC2120
 # SC1090: Can't follow non-constant source. Use a directive to specify location.
@@ -23,10 +23,11 @@ check_sudo () {
 gsettings_personalizations () {
   # dl background
   if [ ! -f $HOME/Pictures/vector.jpg ]; then
-    wget -O $HOME/Pictures/vector.jpg https://imgur.com/download/nhUeOpI
+    wget -O $HOME/Pictures/vector.jpg https://drew-serv.nm1.invadelabs.com/vector.jpg
   fi
 
-  # settings_list=$(gsettings list-recursively) XXX check these everytime
+  # settings_list=$(gsettings list-recursively)
+  # XXX create loop to check all of these everytime
   if [[ ! $(gsettings get org.gnome.desktop.interface clock-format) == "'12h'" ]]; then
     # set 12 hour time
     gsettings set org.gnome.desktop.interface clock-format 12h
@@ -264,7 +265,6 @@ install_apt () {
     lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl screen baobab `#systools` \
     debconf-utils needrestart `#systools` \
     ubuntu-restricted-extras gimp audacity vlc vlc-plugin-fluidsynth ffmpeg atomicparsley `#media` \
-    openjdk-8-jdk `#openjdk8` \
     openssh-server fail2ban `#daemon` \
     openvpn network-manager-openconnect-gnome network-manager-openvpn-gnome `#network-client` \
     rdesktop freerdp2-x11 xtightvncviewer sshpass qbittorrent wireshark `#netutil` \
@@ -319,6 +319,7 @@ pip3_bits () {
              art \
              awscli \
              docker-py \
+             flake8 \
              httpstat \
              pycodestyle \
              pylint \
@@ -410,7 +411,7 @@ install_nvm () {
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-    nvm install v11.15.0
+    nvm install v14.0.0
   fi
 
   source $HOME/.bashrc && echo $PATH
@@ -490,9 +491,9 @@ chefvm_install () {
 
 cerebro_install () {
   if [ ! -d $HOME/Desktop/cerebro-0.9.2 ]; then
-    wget -O $HOME/Desktop/cerebro-0.9.2.tgz https://github.com/lmenezes/cerebro/releases/download/v0.9.2/cerebro-0.9.2.tgz
-    tar xvf $HOME/Desktop/cerebro-0.9.2.tgz -C $HOME/Desktop
-    rm $HOME/Desktop/cerebro-0.9.2.tgz
+    wget -O $HOME/Desktop/cerebro-0.9.4.tgz https://github.com/lmenezes/cerebro/releases/download/v0.9.4/cerebro-0.9.4.tgz
+    tar xvf $HOME/Desktop/cerebro-0.9.4.tgz -C $HOME/Desktop
+    rm $HOME/Desktop/cerebro-0.9.4.tgz
   fi
 }
 
@@ -522,8 +523,7 @@ install_rbenv
 hashicorp_tools
 chefvm_install
 cerebro_install
-tfenv_install
-echo 'Install Java' | python3 -c 'import sys; from art import * ; print(text2art(sys.stdin.read()))'
+echo 'Install Java 11' | python3 -c 'import sys; from art import * ; print(text2art(sys.stdin.read()))'
 echo 'Install tfenv' | python3 -c 'import sys; from art import * ; print(text2art(sys.stdin.read()))'
 
 END=$(date +%s)
