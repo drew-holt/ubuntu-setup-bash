@@ -1,10 +1,9 @@
 language: bash
 sudo: required
-dist: trusty
+dist: xenial
 before_install:
-- sudo apt-add-repository "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse"
 - sudo apt-get -qq update
-- sudo apt-get install -t trusty-backports shellcheck kcov
+- sudo apt-get install -y shellcheck kcov
 script:
 - shellcheck -x *.sh
 # after_success: |

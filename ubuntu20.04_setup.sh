@@ -263,7 +263,7 @@ install_apt () {
     keepassxc xdotool gnome-tweak-tool chrome-gnome-shell xclip simplescreenrecorder `#tools` \
     acpi vim vim-scripts vim-runtime vim-doc curl xd libguestfs-tools ecryptfs-utils `#systools` \
     lm-sensors p7zip-full exfat-utils exfat-fuse libimage-exiftool-perl screen baobab `#systools` \
-    debconf-utils needrestart `#systools` \
+    debconf-utils needrestart ripgrep fzf `#systools` \
     ubuntu-restricted-extras gimp audacity vlc vlc-plugin-fluidsynth ffmpeg atomicparsley `#media` \
     openssh-server fail2ban `#daemon` \
     openvpn network-manager-openconnect-gnome network-manager-openvpn-gnome `#network-client` \
@@ -318,6 +318,7 @@ pip3_bits () {
              ansible-lint \
              art \
              awscli \
+             docker-compose \
              docker-py \
              flake8 \
              httpstat \
