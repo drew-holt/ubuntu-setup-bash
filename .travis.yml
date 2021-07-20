@@ -1,6 +1,9 @@
 language: bash
 sudo: required
 dist: xenial
+branches:
+  only:
+    - master
 before_install:
 - sudo apt-get -qq update
 - sudo apt-get install -y shellcheck kcov
