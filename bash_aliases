@@ -10,6 +10,7 @@ alias hub-pr="hub pull-request -o --no-edit"
 alias tfi='rm -rf .terraform/modules/* && terraform init'
 alias tfp="terraform plan -out=current.plan"
 alias tfa="terraform apply current.plan"
-alias ssh_apt='_ssh_apt() { ssh "$1" "sudo apt-get update && sudo apt-get -qy dist-upgrade";}; _ssh_apt'
+alias ssh_apt='_ssh_apt() { ssh "$1" "sudo apt-get update && DEBIAN_FRONTEND=noninteractive sudo apt-get -qy dist-upgrade"; xdg-open "https://drew-serv.nm1.invadelabs.com/nagios/cgi-bin/cmd.cgi?cmd_typ=7&host=$1&service=Check+Apt&force_check"; }; _ssh_apt'
+alias ssh_apt_old='_ssh_apt() { ssh "$1" "sudo apt-get update && sudo apt-get -qy dist-upgrade";}; _ssh_apt'
 alias ssh_dnf='_ssh_dnf() { ssh "$1" "sudo dnf -y upgrade";}; _ssh_dnf'
 alias sshfs_drew='sshfs 192.168.1.125:/srv $HOME/drewserv'
